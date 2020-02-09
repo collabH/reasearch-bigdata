@@ -8,12 +8,17 @@ import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FSDataInputStream;
 import org.apache.hadoop.fs.FSDataOutputStream;
 import org.apache.hadoop.fs.FileSystem;
+import org.apache.hadoop.fs.LocatedFileStatus;
 import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.fs.RemoteIterator;
 import org.apache.hadoop.io.IOUtils;
+import org.apache.hadoop.util.Progressable;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
 import java.net.URI;
 import java.nio.charset.Charset;
 
@@ -85,13 +90,43 @@ public class HDFSApp {
 
     /**
      * 将本地文件拷贝到hdfs
+     *
      * @throws Exception
      */
     @Test
     public void copy() throws Exception {
         //从本地拷贝到hdfs中
-        fileSystem.copyFromLocalFile(new Path("/User/a.txt"), new Path("/hdfsapi/test/a.txt"));
+        fileSystem.copyFromLocalFile(new Path("/User/a.txt"),
+                new Path("/hdfsapi/test/a.txt"));
+        //断点上传
+        BufferedInputStream in = new BufferedInputStream(new FileInputStream("test.txt"));
+        FSDataOutputStream out = fileSystem.create(new Path("/hdfsapi/test/"), new Progressable() {
+            public void progress() {
+                System.out.println("断点传送");
+            }
+        });
+        IOUtils.copyBytes(in, out, 4096);
     }
-    public void get()throws Exception{
+
+    /**
+     * 下载hdfs文件
+     *
+     * @throws Exception
+     */
+    public void copyToLocal() throws Exception {
+        fileSystem.copyFromLocalFile(new Path("/hdfsapi/test/a.txt"),
+                new Path("/User/a.txt"));
+    }
+
+    /**
+     * 查询文件列表
+     *
+     * @throws Exception
+     */
+    public void listFiles() throws Exception {
+        RemoteIterator<LocatedFileStatus> list = fileSystem.listFiles(new Path("/hdfsapi/text/"), true);
+        while (list.hasNext()) {
+            System.out.println(list.next().isDirectory());
+        }
     }
 }
