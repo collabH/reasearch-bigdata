@@ -2,7 +2,7 @@
  * Copyright: 2020 forchange Inc. All rights reserved.
  */
 
-package com.reasearch.hadoop;
+package com.reasearch.hadoop.hdfs;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FSDataInputStream;

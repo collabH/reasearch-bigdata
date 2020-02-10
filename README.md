@@ -12,6 +12,6 @@
 
 ```
 ### HDFS文档
-[官方文档](https://hadoop.apache.org/docs/r3.2.1/hadoop-project-dist/hadoop-hdfs/HdfsDesign.html)
-[石墨笔记](https://shimo.im/docs/RjGgVxDJ8KT96xr8/)
-[HDFS文件读取写入流程](https://www.processon.com/view/link/5e40b7e4e4b085b5f21a193d)
+* [官方文档](https://hadoop.apache.org/docs/r3.2.1/hadoop-project-dist/hadoop-hdfs/HdfsDesign.html)
+* [石墨笔记](https://shimo.im/docs/RjGgVxDJ8KT96xr8/)
+* [HDFS文件读取写入流程](https://www.processon.com/view/link/5e40b7e4e4b085b5f21a193d)
