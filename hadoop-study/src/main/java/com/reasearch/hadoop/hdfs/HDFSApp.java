@@ -29,7 +29,7 @@ import java.nio.charset.Charset;
  * @date: 2020-02-09 19:36
  */
 public class HDFSApp {
-    private static final String HADOOP_HDFS_PATH = "hdfs://localhost:8020";
+    private static final String HADOOP_HDFS_PATH = "hdfs://hadoop:8020";
     private FileSystem fileSystem;
     private Configuration configuration;
 
@@ -37,7 +37,7 @@ public class HDFSApp {
     public void setUp() throws Exception {
         System.out.println("HDFSAPP.setUp");
         configuration = new Configuration();
-        fileSystem = FileSystem.get(new URI(HADOOP_HDFS_PATH), configuration, "hadoop");
+        fileSystem = FileSystem.get(new URI(HADOOP_HDFS_PATH), configuration, "babywang");
     }
 
     @After
