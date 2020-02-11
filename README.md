@@ -4,7 +4,7 @@
 ### 历史之路
 [Hadoop十年解读](https://www.infoq.cn/article/hadoop-ten-years-interpretation-and-development-forecast)
 
-### HDFS JavaAPI
+### HDFS JavaAPIgit
 #### 副本因子的坑
 ```text
 如果通过hdfs shell上传的文件那么他的副本因子是根据 hdfs-site.xml中的配置,
