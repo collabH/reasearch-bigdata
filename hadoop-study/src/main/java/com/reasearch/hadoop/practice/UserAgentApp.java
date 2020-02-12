@@ -2,7 +2,7 @@
  * Copyright: 2020 forchange Inc. All rights reserved.
  */
 
-package com.reasearch.hadoop.mapreduce;
+package com.reasearch.hadoop.practice;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
@@ -16,22 +16,15 @@ import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 import java.io.IOException;
 
 /**
- * @fileName: WordCountApp.java
- * @description: 使用MapReduce开发WordCount程序
+ * @fileName: UserAgentApp.java
+ * @description: 统计nginx的useragent日志，对应浏览器的数量
  * @author: by echo huang
- * @date: 2020-02-11 11:53
+ * @date: 2020-02-12 10:58
  */
-public class WordCountApp2 {
-    /**
-     * Driver:封装MapReduce作业的所有信息
-     * 编译打包上传至hadoop服务器，然后用yarn进行执行
-     * hadoop jar jarname 主类 2 2
-     *
-     * @param args
-     */
+public class UserAgentApp {
     public static void main(String[] args) throws IOException, ClassNotFoundException, InterruptedException {
-        String jobName = "mapreduce-wordCount";
         Configuration configuration = new Configuration();
+
         //准备清理已经存在的输出目录
         Path path = new Path(args[1]);
         FileSystem fileSystem = FileSystem.get(configuration);
@@ -39,24 +32,22 @@ public class WordCountApp2 {
             fileSystem.delete(path, true);
             System.out.println("output file exists");
         }
-        //创建Job
-        Job job = Job.getInstance(configuration, jobName);
-        //设置jar包依赖
-        //job.addArchiveToClassPath(new Path("hdfs://hadoop:8020/hello/commons-lang3-3.9.jar"));
 
-        //设置Job处理类
-        job.setJarByClass(WordCountApp2.class);
-        //设置作业处理的输入路径
-        FileInputFormat.setInputPaths(job, new Path(args[0]));
+        Job job = Job.getInstance(configuration, "useragent");
 
-        //设置自定义的Mapper处理类和Reducer处理类以及对应输出参数类型
-        job.setMapperClass(MyMapper.class);
-        job.setMapOutputKeyClass(Text.class);
+        job.addArchiveToClassPath(new Path("/jar/userAgentPar.jar"));
+        job.setNumReduceTasks(4);
+        job.setCombinerClass(UserAgentReducer.class);
+
         job.setMapOutputValueClass(LongWritable.class);
-
-        job.setReducerClass(MyReducer.class);
+        job.setMapOutputKeyClass(Text.class);
         job.setOutputKeyClass(Text.class);
         job.setOutputValueClass(LongWritable.class);
+
+        job.setMapperClass(UserAgentMapper.class);
+        job.setReducerClass(UserAgentReducer.class);
+
+        FileInputFormat.setInputPaths(job, new Path(args[0]));
 
         //设置作业处理的输出路径
         TextOutputFormat.setOutputPath(job, path);

@@ -47,5 +47,28 @@
             <artifactId>commons-lang3</artifactId>
             <version>3.9</version>
         </dependency>
+        <dependency>
+            <groupId>com.kumkee</groupId>
+            <artifactId>UserAgentParser</artifactId>
+            <version>0.0.1</version>
+        </dependency>
     </dependencies>
+    <!--mvn assembly:assembly 将所有包打包至一个jar中-->
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>com.reasearch.hadoop.mapreduce.WordCountApp2</mainClass>
+                        </manifest>
+                    </archive>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
