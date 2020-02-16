@@ -5,7 +5,7 @@
 package com.research.api.dataset;
 
 import com.google.common.collect.Lists;
-import com.mysql.cj.jdbc.Driver;
+import com.mysql.jdbc.Driver;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
