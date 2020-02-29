@@ -1,0 +1,18 @@
+redis:
+  database: 5
+  host: oc-test-infra-01.forchange.local
+  port: 6379
+  password: pPnLC4AHBJ4AfeHyUyuy4HZkd8Mvpu
+  #连接池最大连接数（使用负值表示没有限制）
+  pool:
+    max:
+      active: 10000
+      # 连接池中的最大空闲连接
+      idle: 100
+      #连接池最大阻塞等待时间（使用负值表示没有限制）
+      wait: -1
+    # 连接池中的最小空闲连接
+    min:
+      idle: 0
+  # 连接超时时间（毫秒）
+  timeout: 0

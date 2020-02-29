@@ -18,7 +18,9 @@
 
 package com.research;
 
+import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.api.java.ExecutionEnvironment;
+import org.apache.flink.api.java.operators.DataSource;
 
 /**
  * Skeleton for a Flink Batch Job.
@@ -32,35 +34,57 @@ import org.apache.flink.api.java.ExecutionEnvironment;
  */
 public class BatchJob {
 
-	public static void main(String[] args) throws Exception {
-		// set up the batch execution environment
-		final ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
+    public static void main(String[] args) throws Exception {
+        // set up the batch execution environment
+        final ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
 
-		/*
-		 * Here, you can start creating your execution plan for Flink.
-		 *
-		 * Start with getting some data from the environment, like
-		 * 	env.readTextFile(textPath);
-		 *
-		 * then, transform the resulting DataSet<String> using operations
-		 * like
-		 * 	.filter()
-		 * 	.flatMap()
-		 * 	.join()
-		 * 	.coGroup()
-		 *
-		 * and many more.
-		 * Have a look at the programming guide for the Java API:
-		 *
-		 * http://flink.apache.org/docs/latest/apis/batch/index.html
-		 *
-		 * and the examples
-		 *
-		 * http://flink.apache.org/docs/latest/apis/batch/examples.html
-		 *
-		 */
+        DataSource<Integer> integerDataSource = env.fromElements(1, 2, 3, 4);
+        String h = null;
+        integerDataSource.map(new TestMap(h))
+                .print();
+        /*
+         * Here, you can start creating your execution plan for Flink.
+         *
+         * Start with getting some data from the environment, like
+         * 	env.readTextFile(textPath);
+         *
+         * then, transform the resulting DataSet<String> using operations
+         * like
+         * 	.filter()
+         * 	.flatMap()
+         * 	.join()
+         * 	.coGroup()
+         *
+         * and many more.
+         * Have a look at the programming guide for the Java API:
+         *
+         * http://flink.apache.org/docs/latest/apis/batch/index.html
+         *
+         * and the examples
+         *
+         * http://flink.apache.org/docs/latest/apis/batch/examples.html
+         *
+         */
 
-		// execute program
-		env.execute("Flink Batch Java API Skeleton");
-	}
+        // execute program
+        //    env.execute("Flink Batch Java API Skeleton");
+    }
+
+    static class TestMap implements MapFunction<Integer, String> {
+        private String ab;
+
+        public TestMap(String ab) {
+            this.ab = ab;
+        }
+
+        public String getAb() {
+            return ab;
+        }
+
+        @Override
+        public String map(Integer value) throws Exception {
+            ab = "" + value;
+            return ab;
+        }
+    }
 }

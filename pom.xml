@@ -17,6 +17,7 @@
         <module>hadoop-study</module>
         <module>flink-study</module>
         <module>flinkonyarn</module>
+        <module>guice-di</module>
     </modules>
 
 

@@ -4,8 +4,10 @@
 
 package com.research.yarn;
 
-import org.apache.flink.streaming.api.datastream.DataStreamSource;
-import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.api.common.JobExecutionResult;
+import org.apache.flink.api.java.ExecutionEnvironment;
+import org.apache.flink.api.java.operators.DataSource;
+import org.apache.flink.core.fs.FileSystem;
 
 /**
  * @fileName: YarnTest.java
@@ -15,9 +17,12 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
  */
 public class YarnTest {
     public static void main(String[] args) throws Exception {
-        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
-        DataStreamSource<String> data = env.socketTextStream("localhost", 9999);
-        data.print();
-        env.execute("flink on yarn test");
+        ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
+        DataSource<String> data = env.fromElements("hello", "world", "zhangsan");
+        data.map(new MyMapper())
+                .writeAsText("/Users/babywang/Documents/reserch/dev/workspace/reasech-bigdata/data/2", FileSystem.WriteMode.OVERWRITE);
+        Object dataSetCounter = env.execute("counter")
+                .getAccumulatorResult("counter1");
+        System.out.println(dataSetCounter);
     }
 }
