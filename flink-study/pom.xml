@@ -281,6 +281,19 @@
                     <artifactId>flink-connector-kafka_2.11</artifactId>
                     <version>1.10.0</version>
                 </dependency>
+                <!-- https://mvnrepository.com/artifact/org.apache.flink/flink-connector-elasticsearch-base -->
+                <dependency>
+                    <groupId>org.apache.flink</groupId>
+                    <artifactId>flink-connector-elasticsearch7_2.11</artifactId>
+                    <version>1.10.0</version>
+                </dependency>
+                <!-- https://mvnrepository.com/artifact/org.apache.flink/flink-jdbc -->
+                <dependency>
+                    <groupId>org.apache.flink</groupId>
+                    <artifactId>flink-jdbc_2.11</artifactId>
+                    <version>1.10.0</version>
+                </dependency>
+
             </dependencies>
         </profile>
     </profiles>

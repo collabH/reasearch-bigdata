@@ -39,13 +39,13 @@
     <logger name="org.apache.commons" level="ERROR"/>
     <logger name="org.jboss.logging" level="ERROR"/>
     <logger name="org.hibernate.validator" level="ERROR"/>
-
+    <logger name="org.elasticsearch" level="EEROR"/>
     <!-- 配置日志级别
         all<debug<info<warn<error<fatal<off默认为debug
         off将不会输入任何日志
 
      -->
-    <root level="off">
+    <root level="error">
         <appender-ref ref="console" />
         <appender-ref ref="rollingFile" />
     </root>
