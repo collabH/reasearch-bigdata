@@ -18,6 +18,7 @@
         <module>flink-study</module>
         <module>flinkonyarn</module>
         <module>guice-di</module>
+        <module>flink-base</module>
     </modules>
 
 

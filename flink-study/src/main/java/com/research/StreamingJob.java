@@ -18,6 +18,8 @@
 
 package com.research;
 
+import org.apache.flink.streaming.api.CheckpointingMode;
+import org.apache.flink.streaming.api.environment.CheckpointConfig;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 /**
@@ -34,31 +36,46 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
  */
 public class StreamingJob {
 
-	public static void main(String[] args) throws Exception {
-		// set up the streaming execution environment
-		final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+    public static void main(String[] args) throws Exception {
+        // set up the streaming execution environment
+        final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
-		/*
-		 * Here, you can start creating your execution plan for Flink.
-		 *
-		 * Start with getting some data from the environment, like
-		 * 	env.readTextFile(textPath);
-		 *
-		 * then, transform the resulting DataStream<String> using operations
-		 * like
-		 * 	.filter()
-		 * 	.flatMap()
-		 * 	.join()
-		 * 	.coGroup()
-		 *
-		 * and many more.
-		 * Have a look at the programming guide for the Java API:
-		 *
-		 * http://flink.apache.org/docs/latest/apis/streaming/index.html
-		 *
-		 */
+        //设置俩个checkpoint的间隔，以及设置恰好一次语义，代表需要checkpoint barrier对齐
+        env.enableCheckpointing(1000, CheckpointingMode.EXACTLY_ONCE);
 
-		// execute program
-		env.execute("Flink Streaming Java API Skeleton");
-	}
+        CheckpointConfig checkpointConfig = env.getCheckpointConfig();
+        //checkpoint之间需要等待的时间
+        checkpointConfig.setMinPauseBetweenCheckpoints(500);
+        //并发做checkpoint
+        checkpointConfig.setMaxConcurrentCheckpoints(5);
+        //checkpoint超时设置
+        checkpointConfig.setCheckpointTimeout(5000);
+        //checkpoint的间隔
+        checkpointConfig.setCheckpointInterval(500);
+        //cacel job时删除所有checkpoint保存的status，默认为都被删除
+        checkpointConfig.enableExternalizedCheckpoints(CheckpointConfig.ExternalizedCheckpointCleanup.DELETE_ON_CANCELLATION);
+
+        /*
+         * Here, you can start creating your execution plan for Flink.
+         *
+         * Start with getting some data from the environment, like
+         * 	env.readTextFile(textPath);
+         *
+         * then, transform the resulting DataStream<String> using operations
+         * like
+         * 	.filter()
+         * 	.flatMap()
+         * 	.join()
+         * 	.coGroup()
+         *
+         * and many more.
+         * Have a look at the programming guide for the Java API:
+         *
+         * http://flink.apache.org/docs/latest/apis/streaming/index.html
+         *
+         */
+
+        // execute program
+        env.execute("Flink Streaming Java API Skeleton");
+    }
 }

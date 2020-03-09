@@ -5,7 +5,6 @@
 package com.research.yarn;
 
 import org.apache.flink.api.common.functions.RichMapFunction;
-import org.apache.flink.configuration.Configuration;
 import org.apache.flink.metrics.Counter;
 
 /**
@@ -23,10 +22,4 @@ public class MyMapper extends RichMapFunction<String, String> {
         return "wx:" + s;
     }
 
-    @Override
-    public void open(Configuration parameters) throws Exception {
-        super.open(parameters);
-        this.counter = getRuntimeContext().getMetricGroup()
-                .counter("counter1");
-    }
 }
