@@ -14,7 +14,6 @@ import org.apache.flink.api.java.ExecutionEnvironment;
 import org.apache.flink.api.java.operators.DataSource;
 import org.apache.flink.api.java.operators.MapOperator;
 import org.apache.flink.configuration.Configuration;
-import org.apache.flink.types.DoubleValue;
 import scala.Tuple2;
 
 import java.io.IOException;

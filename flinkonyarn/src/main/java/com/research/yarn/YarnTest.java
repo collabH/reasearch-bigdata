@@ -6,7 +6,6 @@ package com.research.yarn;
 
 import org.apache.flink.api.java.ExecutionEnvironment;
 import org.apache.flink.api.java.operators.DataSource;
-import org.apache.flink.core.fs.Path;
 
 /**
  * @fileName: YarnTest.java

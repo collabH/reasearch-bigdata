@@ -20,6 +20,7 @@
         <module>guice-di</module>
         <module>flink-base</module>
         <module>quick-startscala</module>
+        <module>quickstart-scala</module>
     </modules>
 
 
