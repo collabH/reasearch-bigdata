@@ -45,6 +45,14 @@
             <version>${spark.version}</version>
         </dependency>
 
+        <!--引入akka-actor并发框架-->
+        <!-- https://mvnrepository.com/artifact/com.typesafe.akka/akka-actor -->
+        <dependency>
+            <groupId>com.typesafe.akka</groupId>
+            <artifactId>akka-actor_2.12</artifactId>
+            <version>2.6.3</version>
+        </dependency>
+
     </dependencies>
 
     <build>
