@@ -9,7 +9,7 @@ package com.research;
 public class TestRecursion {
 
     public static void main(String[] args) {
-        say();
+        System.out.println(5%4);
     }
     private static void say(){
         while (true){

@@ -4,12 +4,15 @@
 
 package com.research.training;
 
+import com.google.common.base.Charsets;
 import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.flink.api.common.functions.MapFunction;
-import org.apache.flink.api.common.serialization.SimpleStringSchema;
+import org.apache.flink.api.common.serialization.DeserializationSchema;
 import org.apache.flink.api.common.typeinfo.TypeHint;
+import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.api.java.tuple.Tuple;
 import org.apache.flink.api.java.tuple.Tuple3;
 import org.apache.flink.api.java.tuple.Tuple4;
@@ -25,6 +28,7 @@ import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer;
 import org.apache.flink.util.Collector;
 import org.apache.http.HttpHost;
 
+import java.io.IOException;
 import java.util.Properties;
 import java.util.concurrent.atomic.LongAdder;
 
@@ -50,7 +54,23 @@ public class TestFlinkKafkaConsumer {
         //启用checkpoint代替默认kafka定期向 Zookeeper 提交 offset。
         env.enableCheckpointing(500000, CheckpointingMode.EXACTLY_ONCE);
         env.setParallelism(1);
-        FlinkKafkaConsumer<String> consumer = new FlinkKafkaConsumer<String>("flink-kafka-topic", new SimpleStringSchema(), props);
+        FlinkKafkaConsumer<String> consumer = new FlinkKafkaConsumer<String>("flink-kafka-topic", new DeserializationSchema<String>() {
+            @Override
+            public String deserialize(byte[] message) throws IOException {
+                return new String(message, Charsets.UTF_8);
+            }
+
+            @Override
+            public boolean isEndOfStream(String nextElement) {
+                return StringUtils.isBlank(nextElement);
+            }
+
+            @Override
+            public TypeInformation<String> getProducedType() {
+                return TypeInformation.of(new TypeHint<String>() {
+                });
+            }
+        }, props);
         consumer.setCommitOffsetsOnCheckpoints(true);
         consumer.setStartFromLatest();
         DataStreamSource<String> data = env.addSource(consumer);

@@ -34,7 +34,6 @@ public class MySqlSource extends RichParallelSourceFunction<Map<String, String>>
     @Override
     public void open(Configuration parameters) throws Exception {
         super.open(parameters);
-        Class.forName(Driver.class.getName());
         connection = DriverManager.getConnection("jdbc:mysql:///sandbox-monitor", "root", "root");
         ps = connection.prepareStatement("select  user_id,domain from user_domain_config");
         ps.execute();
