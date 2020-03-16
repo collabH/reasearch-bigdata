@@ -1,5 +1,7 @@
 package com.research;
 
+import java.net.URL;
+
 /**
  * @fileName: TestRecursion.java
  * @description: TestRecursion.java类说明
@@ -9,10 +11,12 @@ package com.research;
 public class TestRecursion {
 
     public static void main(String[] args) {
-        System.out.println(5%4);
+        URL resource = TestRecursion.class.getClassLoader().getResource("log4j.properties");
+        System.out.println(resource);
     }
-    private static void say(){
-        while (true){
+
+    private static void say() {
+        while (true) {
             say();
         }
     }
