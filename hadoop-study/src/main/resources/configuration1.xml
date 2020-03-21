@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <property>
+        <name>size</name>
+        <value>12</value>
+        <description>Size</description>
+    </property>
+    <property>
+        <name>weight</name>
+        <value>20</value>
+        <description>Weight</description>
+    </property>
+
+</configuration>
