@@ -14,7 +14,8 @@ public class ConfApp {
 
     public static void main(String[] args) {
 //        readConf();
-        merge();
+//        merge();
+//        paramExtension();
     }
 
     /**
@@ -42,5 +43,19 @@ public class ConfApp {
 
         System.out.println(conf.get("weight"));
 
+        System.out.println(System.getProperty("size"));
+
     }
+
+    /**
+     * 变量扩展
+     */
+    public static void paramExtension() {
+        Configuration conf = new Configuration();
+        conf.addResource("configuration.xml");
+        System.setProperty("size", "20");
+
+        System.out.println(conf.get("size"));
+    }
+
 }

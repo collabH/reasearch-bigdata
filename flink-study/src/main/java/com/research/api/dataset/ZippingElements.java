@@ -19,8 +19,8 @@ import org.apache.flink.api.java.utils.DataSetUtils;
 public class ZippingElements {
     public static void main(String[] args) throws Exception {
         ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
-//        zipWithIndex(env);
-        zipWithUniqueId(env);
+        zipWithIndex(env);
+//        zipWithUniqueId(env);
     }
 
     private static void zipWithIndex(ExecutionEnvironment env) throws Exception {
