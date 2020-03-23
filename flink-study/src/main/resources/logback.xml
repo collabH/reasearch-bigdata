@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <!--  %d{pattern}日期
+                    %m或者%msg为信息
+                    %M为method
+                    %L为行号
+                    %thread线程名称
+                    %n换行
+                    %-5level
+
+                    %C{length} |  %class{length}
+
+                    %c {length }  |  %lo {length }   |  %logger {length }
+                    输出日志的logger名，可有一个整形参数，功能是缩短logger名，设置为0表示只输入logger最右边点符号之后的字符串。 Conversion specifier Logger name Result
+            -->
+            <!--<pattern>%d{HH:mm:ss}  %-5level %logger{36} -%L %n%msg%n</pattern> -->
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %C{36} %M %L - %msg %m %n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="rollingFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- 日志文件位置 -->
+        <file>logs/logs.log</file>
+        <!-- 基于时间的rolling策略，默认是1h -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>logs/logs.%d{yyyy-MM-dd}.log</fileNamePattern>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{HH:mm:ss}  %-5level %logger{36}  - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- 第三方组件的日志 -->
+    <logger name="org.springframework" level="ERROR"/>
+    <logger name="org.apache" level="ERROR"/>
+    <logger name="org.apache.commons" level="ERROR"/>
+    <logger name="org.jboss.logging" level="ERROR"/>
+    <logger name="org.hibernate.validator" level="ERROR"/>
+    <logger name="org.elasticsearch" level="EEROR"/>
+    <!-- 配置日志级别
+        all<debug<info<warn<error<fatal<off默认为debug
+        off将不会输入任何日志
+
+     -->
+    <root level="error">
+        <appender-ref ref="console" />
+        <appender-ref ref="rollingFile" />
+    </root>
+</configuration>

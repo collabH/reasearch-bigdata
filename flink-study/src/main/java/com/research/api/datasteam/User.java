@@ -4,7 +4,6 @@
 
 package com.research.api.datasteam;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

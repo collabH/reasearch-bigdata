@@ -8,7 +8,7 @@ import com.mysql.jdbc.Driver;
 import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.context.annotation.Primary;
 
 import javax.sql.DataSource;
 
@@ -21,6 +21,7 @@ import javax.sql.DataSource;
 @Configuration
 public class DataSourceConfig {
     @Bean
+    @Primary
     public DataSource dataSource() {
         HikariDataSource hikariDataSource = new HikariDataSource();
         hikariDataSource.setUsername("root");
@@ -30,8 +31,4 @@ public class DataSourceConfig {
         return hikariDataSource;
     }
 
-    @Bean(name = "jdbc")
-    public NamedParameterJdbcTemplate namedParameterJdbcTemplate() {
-        return new NamedParameterJdbcTemplate(dataSource());
-    }
 }

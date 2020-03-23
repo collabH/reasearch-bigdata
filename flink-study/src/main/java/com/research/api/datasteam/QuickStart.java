@@ -5,6 +5,7 @@
 package com.research.api.datasteam;
 
 import org.apache.flink.api.common.functions.FlatMapFunction;
+import org.apache.flink.api.common.typeinfo.TypeHint;
 import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.windowing.time.Time;
@@ -22,15 +23,14 @@ public class QuickStart {
 
         env.socketTextStream("localhost",
                 9999)
-                .flatMap(new FlatMapFunction<String, Tuple2<String, Long>>() {
-                    @Override
-                    public void flatMap(String word, Collector<Tuple2<String, Long>> collector) throws Exception {
-                        String[] tokens = word.toLowerCase().split(",");
-                        for (String token : tokens) {
-                            collector.collect(new Tuple2<>(token, 1L));
-                        }
+                .flatMap((FlatMapFunction<String, Tuple2<String, Long>>) (word, collector) -> {
+                    String[] tokens = word.toLowerCase().split(",");
+                    for (String token : tokens) {
+                        collector.collect(new Tuple2<>(token, 1L));
                     }
-                }).keyBy("f0")
+                }).returns(new TypeHint<Tuple2<String, Long>>() {
+        })
+                .keyBy("f0")
                 .timeWindow(Time.seconds(5))
                 .sum("f1")
                 .print();

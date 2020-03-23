@@ -4,9 +4,7 @@
 
 package com.research.api.tablesql;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 /**
  * @fileName: User.java
