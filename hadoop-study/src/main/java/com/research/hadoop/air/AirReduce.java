@@ -2,6 +2,8 @@ package com.research.hadoop.air;
 
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Counter;
+import org.apache.hadoop.mapreduce.JobCounter;
 import org.apache.hadoop.mapreduce.Reducer;
 
 import java.io.IOException;
@@ -19,6 +21,9 @@ public class AirReduce extends Reducer<Text, IntWritable, Text, IntWritable> {
         for (IntWritable value : values) {
             maxAir = Math.max(value.get(), maxAir);
         }
+        Counter counter = context.getCounter("air","test");
+        counter.increment(1);
+        System.out.println("job count:" + counter.getValue());
         context.write(key, new IntWritable(maxAir));
     }
 }

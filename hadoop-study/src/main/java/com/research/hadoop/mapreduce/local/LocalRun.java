@@ -46,6 +46,7 @@ public class LocalRun extends Configured implements Tool {
         args[0] = "/user/max.txt";
         args[1] = "/Users/babywang/Documents/reserch/dev/workspace/reasech-bigdata/logs/hello";
         int run = ToolRunner.run(new LocalRun(), args);
+
         System.exit(run);
     }
 }
