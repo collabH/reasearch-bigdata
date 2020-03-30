@@ -2,11 +2,16 @@ package com.hadoop.avro.seariable;
 
 import org.apache.avro.Schema;
 import org.apache.avro.generic.GenericData;
+import org.apache.avro.generic.GenericDatumReader;
 import org.apache.avro.generic.GenericDatumWriter;
 import org.apache.avro.generic.GenericRecord;
+import org.apache.avro.io.BinaryDecoder;
 import org.apache.avro.io.BinaryEncoder;
+import org.apache.avro.io.DatumReader;
+import org.apache.avro.io.DecoderFactory;
 import org.apache.avro.io.EncoderFactory;
 
+import javax.xml.ws.EndpointReference;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,6 +23,7 @@ import java.io.InputStream;
  * @date: 2020-03-29 18:46
  */
 public class AvroApp {
+
 
 
     /**
@@ -51,13 +57,20 @@ public class AvroApp {
      *
      * @param record
      */
-    private static void seariableData(GenericRecord record) {
+    private static void seariableData(GenericRecord record,Schema schema) {
         try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
 
-            GenericDatumWriter<GenericRecord> writer = new GenericDatumWriter<>();
+            GenericDatumWriter<GenericRecord> writer = new GenericDatumWriter<>(schema);
             BinaryEncoder encoder = EncoderFactory.get().binaryEncoder(baos, null);
             writer.write(record, encoder);
             encoder.flush();
+            //从流中读取数据
+            DatumReader<GenericRecord> reader=new GenericDatumReader<>(schema);
+            BinaryDecoder decoder = DecoderFactory.get().binaryDecoder(baos.toByteArray(), null);
+            GenericRecord genericRecord = reader.read(null, decoder);
+            System.out.println(genericRecord.get("name"));
+            System.out.println(genericRecord.get("favorite_number"));
+            System.out.println(genericRecord.get("favorite_color"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -65,6 +78,7 @@ public class AvroApp {
 
     public static void main(String[] args) throws IOException {
         InputStream inputStream = ClassLoader.getSystemClassLoader().getResourceAsStream("user.avsc");
-        setData(readAvro(inputStream));
+        Schema schema = readAvro(inputStream);
+        //seariableData(setData(schema),schema);
     }
 }
