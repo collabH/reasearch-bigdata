@@ -21,6 +21,8 @@
         <module>flink-base</module>
         <module>quickstart-scala</module>
         <module>avro</module>
+        <module>streaming-kafka</module>
+        <module>hadoop-parquet</module>
     </modules>
 
 
