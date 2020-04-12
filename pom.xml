@@ -23,6 +23,8 @@
         <module>avro</module>
         <module>streaming-kafka</module>
         <module>hadoop-parquet</module>
+        <module>research-flume</module>
+        <module>study-spark</module>
     </modules>
 
 

@@ -1,6 +1,5 @@
 package com.research.cep.order;
 
-import org.apache.flink.api.common.restartstrategy.RestartStrategies;
 import org.apache.flink.api.java.utils.ParameterTool;
 import org.apache.flink.cep.CEP;
 import org.apache.flink.cep.PatternFlatSelectFunction;
@@ -11,7 +10,6 @@ import org.apache.flink.cep.pattern.conditions.SimpleCondition;
 import org.apache.flink.streaming.api.TimeCharacteristic;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
-import org.apache.flink.streaming.api.environment.CheckpointConfig;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.functions.AssignerWithPeriodicWatermarks;
 import org.apache.flink.streaming.api.functions.IngestionTimeExtractor;
@@ -46,8 +44,8 @@ public class CEPTimeoutEventJob {
         env.setParallelism(1);
 
         //env.getCheckpointConfig().enableExternalizedCheckpoints(CheckpointConfig.ExternalizedCheckpointCleanup.RETAIN_ON_CANCELLATION);
-      //  env.getConfig().disableSysoutLogging();
-       // env.getConfig().setRestartStrategy(RestartStrategies.fixedDelayRestart(5, 10000));
+        //  env.getConfig().disableSysoutLogging();
+        // env.getConfig().setRestartStrategy(RestartStrategies.fixedDelayRestart(5, 10000));
 
         // 不使用POJO的时间,使用进入系统的事件
         final AssignerWithPeriodicWatermarks extractor = new IngestionTimeExtractor<Order>();
@@ -62,7 +60,7 @@ public class CEPTimeoutEventJob {
         kafkaProps.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
 
         // 接入Kafka的消息
-        FlinkKafkaConsumer<Order> consumer = new FlinkKafkaConsumer<>(GROUP_TOPIC, new OrderSchema() , kafkaProps);
+        FlinkKafkaConsumer<Order> consumer = new FlinkKafkaConsumer<>(GROUP_TOPIC, new OrderSchema(), kafkaProps);
         DataStream<Order> pojoDataStream = env.addSource(consumer)
                 .assignTimestampsAndWatermarks(extractor);
 
@@ -79,6 +77,7 @@ public class CEPTimeoutEventJob {
 
                             @Override
                             public boolean filter(Order pojo) throws Exception {
+                                //创建订单
                                 return pojo.getState() == 1;
                             }
                         })
@@ -88,12 +87,14 @@ public class CEPTimeoutEventJob {
 
                             @Override
                             public boolean filter(Order pojo) throws Exception {
+                                //下单
                                 return pojo.getState() == 2;
                             }
                         }).followedBy("end")
                         .where(new SimpleCondition<Order>() {
                             @Override
                             public boolean filter(Order value) throws Exception {
+                                //支付超时
                                 return value.getState() == 4;
                             }
                         });
@@ -117,7 +118,6 @@ public class CEPTimeoutEventJob {
         // 打印输出超时的POJO
         timeoutPojos.getSideOutput(timedout).print();
         timeoutPojos.print();
-
         env.execute(CEPTimeoutEventJob.class.getSimpleName());
     }
 
