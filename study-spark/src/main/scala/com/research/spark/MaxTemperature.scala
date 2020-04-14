@@ -3,8 +3,8 @@ package com.research.spark
 import org.apache.spark.{SparkConf, SparkContext}
 
 /**
-  * @fileName: MaxTemperature.java
-  * @description: MaxTemperature.java类说明
+  * @fileName: JavaMaxTemperature.java
+  * @description: JavaMaxTemperature.java类说明
   * @author: by echo huang
   * @date: 2020-04-12 21:38
   */
@@ -17,6 +17,5 @@ object MaxTemperature {
       .map(_.split(","))
       .filter(_ != "0")
       .saveAsTextFile(args(1))
-
   }
 }
