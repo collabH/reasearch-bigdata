@@ -24,15 +24,16 @@ public class OrderMessageProducer {
         KafkaProducer<String, String> kafkaProducer = new KafkaProducer<>(props);
         int state = 1;
         int count = 1;
+        int i=1;
         Gson gson = new Gson();
         while (true) {
             if (state == 3 && count % 2 == 0) {
                 state = 4;
             }
             Order order = new Order();
-            order.setId("orderId" + count);
+            order.setId("orderId" + 1);
             order.setOrderTime(System.currentTimeMillis());
-            order.setState(state);
+            order.setState(i);
             state++;
             if (state == 5) {
                 state = 1;

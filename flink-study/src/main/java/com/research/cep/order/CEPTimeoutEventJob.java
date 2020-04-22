@@ -5,6 +5,7 @@ import org.apache.flink.cep.CEP;
 import org.apache.flink.cep.PatternFlatSelectFunction;
 import org.apache.flink.cep.PatternFlatTimeoutFunction;
 import org.apache.flink.cep.PatternStream;
+import org.apache.flink.cep.nfa.aftermatch.AfterMatchSkipStrategy;
 import org.apache.flink.cep.pattern.Pattern;
 import org.apache.flink.cep.pattern.conditions.SimpleCondition;
 import org.apache.flink.streaming.api.TimeCharacteristic;
@@ -71,17 +72,17 @@ public class CEPTimeoutEventJob {
 
         // 从初始化到终态-一个完整的POJO事件序列
         Pattern<Order, Order> completedPojo =
-                Pattern.<Order>begin("create")
+                Pattern.<Order>begin("create", AfterMatchSkipStrategy.skipToNext())
+                        .oneOrMore()
                         .where(new SimpleCondition<Order>() {
-                            private static final long serialVersionUID = -6847788055093903603L;
-
                             @Override
-                            public boolean filter(Order pojo) throws Exception {
-                                //创建订单
-                                return pojo.getState() == 1;
+                            public boolean filter(Order order) throws Exception {
+                                return order.getState() == 1;
                             }
+
+                            private static final long serialVersionUID = -6847788055093903603L;
                         })
-                        .next("pay")
+                        .followedBy("pay").optional()
                         .where(new SimpleCondition<Order>() {
                             private static final long serialVersionUID = -2655089736460847552L;
 
@@ -90,14 +91,15 @@ public class CEPTimeoutEventJob {
                                 //下单
                                 return pojo.getState() == 2;
                             }
-                        }).followedBy("end")
+                        }).next("end")
                         .where(new SimpleCondition<Order>() {
                             @Override
-                            public boolean filter(Order value) throws Exception {
-                                //支付超时
-                                return value.getState() == 4;
+                            public boolean filter(Order pojo) throws Exception {
+                                //下单
+                                return pojo.getState() == 4;
                             }
                         });
+
 
         // 找出1分钟内【便于测试】都没有到终态的事件id
         // 如果针对不同类型有不同within时间，比如有的是超时1分钟，有的可能是超时1个小时 则生成多个PatternStream
@@ -130,11 +132,9 @@ public class CEPTimeoutEventJob {
         @Override
         public void timeout(Map<String, List<Order>> map, long l, Collector<Order> collector) throws Exception {
             if (null != map.get("create")) {
-                for (Order pojoInit : map.get("create")) {
-                    System.out.println("timeout create:" + pojoInit.getId());
-                    collector.collect(pojoInit);
-                }
+                System.out.println(map.get("create"));
             }
+            System.out.println("minde" + map.get("pay"));
             // 因为end超时了，还没收到end，所以这里是拿不到end的
             System.out.println("timeout end: " + map.get("end"));
         }
