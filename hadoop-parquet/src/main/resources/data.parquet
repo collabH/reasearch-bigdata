@@ -1,0 +1,9 @@
+message User{
+  required binary name(UTF8);
+  required int32 age;
+}
+
+message People{
+   required binary name(UTF8);
+   required binary sex(UTF8);
+}

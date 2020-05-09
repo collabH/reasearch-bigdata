@@ -19,8 +19,12 @@
         <module>flinkonyarn</module>
         <module>guice-di</module>
         <module>flink-base</module>
-        <module>quick-startscala</module>
         <module>quickstart-scala</module>
+        <module>avro</module>
+        <module>streaming-kafka</module>
+        <module>hadoop-parquet</module>
+        <module>research-flume</module>
+        <module>study-spark</module>
     </modules>
 
 

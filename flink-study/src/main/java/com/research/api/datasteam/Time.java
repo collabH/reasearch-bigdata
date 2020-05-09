@@ -18,6 +18,5 @@ public class Time {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         //指定流式时间特性:event time\processing time\Ingestion time,默认是processing time
         env.setStreamTimeCharacteristic(TimeCharacteristic.EventTime);
-
     }
 }

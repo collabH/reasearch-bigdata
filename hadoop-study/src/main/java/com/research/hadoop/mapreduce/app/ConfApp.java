@@ -1,6 +1,7 @@
 package com.research.hadoop.mapreduce.app;
 
 import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.mapred.JobClient;
 import org.hamcrest.Matchers;
 import org.junit.Assert;
 
@@ -14,7 +15,9 @@ public class ConfApp {
 
     public static void main(String[] args) {
 //        readConf();
-        merge();
+//        merge();
+//        paramExtension();
+        System.err.println("xxx");
     }
 
     /**
@@ -42,5 +45,19 @@ public class ConfApp {
 
         System.out.println(conf.get("weight"));
 
+        System.out.println(System.getProperty("size"));
+
     }
+
+    /**
+     * 变量扩展
+     */
+    public static void paramExtension() {
+        Configuration conf = new Configuration();
+        conf.addResource("configuration.xml");
+        System.setProperty("size", "20");
+
+        System.out.println(conf.get("size"));
+    }
+
 }

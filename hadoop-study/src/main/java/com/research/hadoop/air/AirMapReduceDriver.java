@@ -9,6 +9,8 @@ import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
+import java.util.BitSet;
+
 
 /**
  * @fileName: AirMapReduceDriver.java
@@ -36,9 +38,8 @@ public class AirMapReduceDriver {
 
         FileInputFormat.addInputPath(job, new Path("/user/air.txt"));
         FileOutputFormat.setOutputPath(job, new Path("/user/max.txt"));
-
         //设置为true数据可以输出到控制台
         System.exit(job.waitForCompletion(true) ? 0 : 1);
-
+        BitSet bitSet = new BitSet();
     }
 }

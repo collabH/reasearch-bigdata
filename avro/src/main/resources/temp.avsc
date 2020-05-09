@@ -1,0 +1,20 @@
+{
+  "namespace":"com.hadoop.avro.hadoop",
+  "type":"record",
+  "name":"WeatherRecord",
+  "doc":"A weather reading",
+  "fields":[
+    {
+        "name":"year",
+        "type":"int"
+    },
+    {
+        "name":"temperature",
+        "type":"int"
+    },
+    {
+        "name":"stationId",
+        "type":"string"
+    }
+  ]
+}
