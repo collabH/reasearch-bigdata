@@ -25,6 +25,8 @@
         <module>hadoop-parquet</module>
         <module>research-flume</module>
         <module>study-spark</module>
+        <module>stateful-function</module>
+        <module>hive</module>
     </modules>
 
 
