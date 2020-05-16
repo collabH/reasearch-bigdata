@@ -1,4 +1,4 @@
-package com.spark.kafka.com.spark.streaming;
+package com.spark.source;
 
 import org.apache.spark.SparkConf;
 import org.apache.spark.streaming.Durations;

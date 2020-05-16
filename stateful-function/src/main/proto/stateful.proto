@@ -1,0 +1,15 @@
+syntax="proto3";
+
+package org.stateful.function.domain;
+option java_package = "org.stateful.function.domain";
+option java_multiple_files = true;
+
+
+message GreetRequest {
+    string who = 1;
+}
+
+message GreetResponse {
+    string who = 1;
+    string greeting = 2;
+}
