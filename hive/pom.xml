@@ -22,6 +22,18 @@
             <artifactId>hive-exec</artifactId>
             <version>0.12.0</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.hive</groupId>
+            <artifactId>hive-jdbc</artifactId>
+            <version>2.3.2</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.apache.hive.hcatalog/hive-hcatalog-core -->
+        <dependency>
+            <groupId>org.apache.hive.hcatalog</groupId>
+            <artifactId>hive-hcatalog-core</artifactId>
+            <version>2.3.2</version>
+        </dependency>
+
     </dependencies>
     <!--mvn assembly:assembly 将所有包打包至一个jar中-->
     <build>
