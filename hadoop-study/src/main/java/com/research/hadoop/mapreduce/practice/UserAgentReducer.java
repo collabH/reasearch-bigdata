@@ -2,7 +2,7 @@
  * Copyright: 2020 forchange Inc. All rights reserved.
  */
 
-package com.research.hadoop.practice;
+package com.research.hadoop.mapreduce.practice;
 
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;

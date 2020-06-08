@@ -1,7 +1,7 @@
 package com.research.hadoop.mapreduce.local;
 
-import com.research.hadoop.air.AirReduce;
-import com.research.hadoop.air.Mapper;
+import com.research.hadoop.mapreduce.air.AirReduce;
+import com.research.hadoop.mapreduce.air.Mapper;
 import org.apache.hadoop.conf.Configured;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.IntWritable;

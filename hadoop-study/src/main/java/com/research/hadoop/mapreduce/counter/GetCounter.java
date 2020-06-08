@@ -1,4 +1,4 @@
-package com.research.hadoop.counter;
+package com.research.hadoop.mapreduce.counter;
 
 import org.apache.hadoop.conf.Configured;
 import org.apache.hadoop.mapreduce.Cluster;

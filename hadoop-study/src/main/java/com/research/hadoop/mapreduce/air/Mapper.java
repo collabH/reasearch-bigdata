@@ -1,10 +1,9 @@
-package com.research.hadoop.air;
+package com.research.hadoop.mapreduce.air;
 
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Counter;
-import org.apache.hadoop.mapreduce.JobCounter;
 
 import java.io.IOException;
 

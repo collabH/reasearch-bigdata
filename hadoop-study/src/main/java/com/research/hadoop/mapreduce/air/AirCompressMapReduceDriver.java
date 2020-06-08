@@ -1,4 +1,4 @@
-package com.research.hadoop.air;
+package com.research.hadoop.mapreduce.air;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;

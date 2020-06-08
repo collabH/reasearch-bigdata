@@ -1,4 +1,4 @@
-package com.research.hadoop.air;
+package com.research.hadoop.mapreduce.air;
 
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;

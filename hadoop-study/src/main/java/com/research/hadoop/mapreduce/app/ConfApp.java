@@ -1,7 +1,6 @@
 package com.research.hadoop.mapreduce.app;
 
 import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.mapred.JobClient;
 import org.hamcrest.Matchers;
 import org.junit.Assert;
 

@@ -1,4 +1,4 @@
-package com.research.hadoop.sort;
+package com.research.hadoop.mapreduce.sort;
 
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;

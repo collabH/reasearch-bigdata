@@ -1,4 +1,4 @@
-package com.research.hadoop.command;
+package com.research.hadoop.hdfs.command;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.hadoop.conf.Configuration;

@@ -1,4 +1,4 @@
-package com.research.hadoop.counter;
+package com.research.hadoop.mapreduce.counter;
 
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;

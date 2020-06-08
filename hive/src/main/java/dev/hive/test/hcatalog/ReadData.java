@@ -8,6 +8,7 @@ import org.apache.hive.hcatalog.data.schema.HCatSchema;
 import org.apache.hive.hcatalog.mapreduce.HCatBaseInputFormat;
 
 import java.io.IOException;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @fileName: ReadData.java
@@ -21,5 +22,18 @@ public class ReadData {
         HCatFieldSchema name = tableSchema.get("name");
         HCatFieldSchema age = tableSchema.get("age");
         HCatBaseInputFormat.setOutputSchema(Job.getInstance(), new HCatSchema(Lists.newArrayList(name, age)));
+    }
+
+    private AtomicInteger count = new AtomicInteger(1);
+
+    private void retry() {
+        try {
+            //run()
+        } catch (Exception e) {
+            if (!count.compareAndSet(3, 1)) {
+                count.incrementAndGet();
+                retry();
+            }
+        }
     }
 }

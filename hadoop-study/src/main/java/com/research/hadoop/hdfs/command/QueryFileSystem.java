@@ -1,4 +1,4 @@
-package com.research.hadoop.command;
+package com.research.hadoop.hdfs.command;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileStatus;

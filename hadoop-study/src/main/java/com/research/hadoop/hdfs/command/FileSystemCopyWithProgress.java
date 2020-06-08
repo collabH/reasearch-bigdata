@@ -1,4 +1,4 @@
-package com.research.hadoop.command;
+package com.research.hadoop.hdfs.command;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.hadoop.conf.Configuration;
