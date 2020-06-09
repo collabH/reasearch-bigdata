@@ -9,6 +9,7 @@ import org.apache.hadoop.util.Tool;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.lang.reflect.Proxy;
 
 /**
  * @fileName: CompressTest.java
@@ -26,6 +27,7 @@ public class CompressTest extends Configured implements Tool {
         fileOut.delete();
         FileOutputStream fileOutputStream = new FileOutputStream(fileOut);
         CompressionOutputStream outputStream = codec.createOutputStream(fileOutputStream);
+
     }
 
     @Override
