@@ -6,10 +6,6 @@ import org.apache.spark.SparkContext
   * @author: by echo huang
   * @date: 2020-06-25 22:44
   */
-class WordCount {
-
-
-}
 object WordCount extends App {
   override def main(args: Array[String]): Unit = {
     val sc = new SparkContext("local","wordCount")

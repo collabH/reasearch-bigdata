@@ -1,9 +1,9 @@
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaSparkContext;
-import org.apache.spark.rdd.RDD;
 import scala.Tuple2;
 
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * @fileName: JavaWordCount.java
@@ -13,15 +13,14 @@ import java.util.Arrays;
  */
 public class JavaWordCount {
     public static void main(String[] args) {
-        JavaSparkContext sc = new JavaSparkContext("local", "javaWordCount", new SparkConf());
-        RDD<Tuple2<String, Integer>> rdd = sc.textFile("file:///Users/babywang/Documents/reserch/studySummary/bigdata/spark/spark.txt")
+        JavaSparkContext sc = new JavaSparkContext("yarn", "javaWordCount", new SparkConf());
+        List<Tuple2<String, Integer>> collect = sc.textFile("file:///Users/babywang/Documents/reserch/studySummary/bigdata/spark/spark.txt")
                 .flatMap(a -> {
                     String[] split = a.split(",");
                     return Arrays.asList(split).iterator();
-                }).map(v1 -> Tuple2.apply(v1, 1))
-                .rdd();
-        rdd.
-
-
+                }).mapToPair(v1 -> new Tuple2<>(v1, 1))
+                .reduceByKey(Integer::sum)
+                .collect();
+        collect.forEach(System.out::println);
     }
 }
