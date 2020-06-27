@@ -17,6 +17,11 @@
             <artifactId>spark-core_2.12</artifactId>
             <version>3.0.0-preview2</version>
         </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.18</version>
+        </dependency>
     </dependencies>
     <!--mvn assembly:assembly 将所有包打包至一个jar中-->
     <build>
