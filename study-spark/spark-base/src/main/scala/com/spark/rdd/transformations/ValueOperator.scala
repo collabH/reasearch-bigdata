@@ -1,4 +1,4 @@
-package com.spark.rdd
+package com.spark.rdd.transformations
 
 import java.util.Objects
 
