@@ -1,5 +1,6 @@
 package com.spark.rdd.actions
 
+import com.google.common.base.Preconditions
 import org.apache.spark.SparkContext
 
 /**
@@ -11,10 +12,12 @@ import org.apache.spark.SparkContext
 object OperatorPractice extends App {
 
   override def main(args: Array[String]): Unit = {
-    val sc = new SparkContext("local", "action")
-    reduceOperator(sc)
-    collectOperator(sc)
-    aggregateOperator(sc)
+    Preconditions.checkNotNull(null)
+
+//    val sc = new SparkContext("local", "action")
+//    reduceOperator(sc)
+//    collectOperator(sc)
+//    aggregateOperator(sc)
   }
 
   /**
