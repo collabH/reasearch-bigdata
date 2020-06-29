@@ -1,5 +1,3 @@
-package com.research.proxy;
-
 /**
  * @fileName: AppPay.java
  * @description: AppPay.java类说明

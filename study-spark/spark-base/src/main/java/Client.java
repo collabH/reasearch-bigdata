@@ -1,5 +1,3 @@
-package com.research.proxy;
-
 /**
  * @fileName: Client.java
  * @description: Client.java类说明

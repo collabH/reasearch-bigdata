@@ -1,5 +1,3 @@
-package com.research.proxy;
-
 /**
  * @fileName: PayProxy.java
  * @description: PayProxy.java类说明
