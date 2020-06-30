@@ -1,8 +1,6 @@
-package com.spark.sql.dataframe
+package com.spark.sql
 
-import org.apache.spark.SparkContext
-import org.apache.spark.sql.SparkSession
-import org.apache.spark.sql.types.StructType
+import org.apache.spark.sql.{DataFrame, SparkSession}
 
 /**
   * @fileName: SparkSQLDataFrame.java
@@ -13,7 +11,7 @@ import org.apache.spark.sql.types.StructType
 object SparkSQLDataFrame extends App {
   override def main(args: Array[String]): Unit = {
     //    rddToDf()
-//    createTmpVie(createDataFrame())
+    //    createTmpVie(createDataFrame())
     createDataFreamNew()
   }
 
@@ -73,11 +71,10 @@ object SparkSQLDataFrame extends App {
 
 
   //RDD to DF
-  def rddToDf() = {
-    val sc = new SparkContext("local", "rddToDf")
-    val rdd = sc.makeRDD(List(1, 2, 3))
-    val sparkSession = createDataFrame()
-    val df = sparkSession.createDataFrame(rdd, classOf[StructType])
+  def rddToDf(spark: SparkSession) = {
+    import spark.implicits._
+    val rdd = spark.sparkContext.makeRDD(List(1, 2, 3))
+    val df: DataFrame = rdd.toDF("id")
     df.show()
   }
 }
