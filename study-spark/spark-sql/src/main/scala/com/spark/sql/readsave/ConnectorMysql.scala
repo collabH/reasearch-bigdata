@@ -16,6 +16,7 @@ object ConnectorMysql extends App {
       .appName("mysql")
       .master("local[*]")
       .getOrCreate()
+
     //第一种参数传递方式
     val mysqlDF = spark.read.format("jdbc")
       .option("url", "jdbc:mysql://localhost:3306/sandbox-monitor")
