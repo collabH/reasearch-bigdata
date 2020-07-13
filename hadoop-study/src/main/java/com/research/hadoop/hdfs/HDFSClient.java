@@ -4,6 +4,7 @@
 
 package com.research.hadoop.hdfs;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FSDataInputStream;
 import org.apache.hadoop.fs.FSDataOutputStream;
@@ -23,28 +24,32 @@ import java.net.URI;
 import java.nio.charset.Charset;
 
 /**
- * @fileName: HDFSApp.java
+ * @fileName: HDFSClient.java
  * @description: HDFSApp操作
  * @author: by echo huang
  * @date: 2020-02-09 19:36
  */
-public class HDFSApp {
+@Slf4j
+public class HDFSClient {
     private static final String HADOOP_HDFS_PATH = "hdfs://hadoop:8020";
     private FileSystem fileSystem;
     private Configuration configuration;
 
     @Before
     public void setUp() throws Exception {
-        System.out.println("HDFSAPP.setUp");
+        log.info("初始化Hadoop环境");
         configuration = new Configuration();
+        configuration.set("dfs.replication", "1");
+        //指定用户，拿到hdfs文件对象
         fileSystem = FileSystem.get(new URI(HADOOP_HDFS_PATH), configuration, "babywang");
     }
 
     @After
     public void tearDown() throws Exception {
+        // 关闭配置
         configuration = null;
         fileSystem = null;
-        System.out.println("HDFSAPP.tearDown");
+        log.info("关闭用户对象");
     }
 
     /**
@@ -54,7 +59,7 @@ public class HDFSApp {
      */
     @Test
     public void mkdir() throws Exception {
-        fileSystem.mkdirs(new Path("/hdfsapi/test"));
+        fileSystem.mkdirs(new Path("/hdfsclient/hellowrod"));
     }
 
     /**
@@ -64,7 +69,7 @@ public class HDFSApp {
      */
     @Test
     public void create() throws Exception {
-        FSDataOutputStream outputStream = fileSystem.create(new Path("/hdfsapi/text/a.txt"));
+        FSDataOutputStream outputStream = fileSystem.create(new Path("/hdfsclient/hellowrod/a.txt"));
         outputStream.write("hello world".getBytes(Charset.defaultCharset().name()));
     }
 
@@ -73,8 +78,8 @@ public class HDFSApp {
      */
     @Test
     public void cat() throws Exception {
-        FSDataInputStream open = fileSystem.open(new Path("/hdfsapi/test/a.txt"));
-        IOUtils.copyBytes(open, System.out, 1024);
+        FSDataInputStream open = fileSystem.open(new Path("/hdfsclient/hellowrod/a.txt"));
+        log.info("read a.txt:{}", org.apache.commons.io.IOUtils.toString(open));
     }
 
     /**
@@ -84,7 +89,7 @@ public class HDFSApp {
      */
     @Test
     public void rename() throws Exception {
-        boolean rename = fileSystem.rename(new Path("/hdfsapi/test/a.txt"), new Path("/hdfsapi/test/b.txt"));
+        boolean rename = fileSystem.rename(new Path("/hdfsclient/hellowrod/a.txt"), new Path("/hdfsclient/hellowrod/b.txt"));
         System.out.println(String.format("是否修改成功:%s", rename));
     }
 
@@ -96,16 +101,16 @@ public class HDFSApp {
     @Test
     public void copy() throws Exception {
         //从本地拷贝到hdfs中
-        fileSystem.copyFromLocalFile(new Path("/User/a.txt"),
-                new Path("/hdfsapi/test/a.txt"));
+        fileSystem.copyFromLocalFile(new Path("/Users/babywang/Documents/reserch/dev/workspace/reasech-bigdata/hadoop-study/src/main/resources/word.txt"),
+                new Path("/hdfsclient/hellowrod/word.txt"));
         //断点上传
-        BufferedInputStream in = new BufferedInputStream(new FileInputStream("test.txt"));
-        FSDataOutputStream out = fileSystem.create(new Path("/hdfsapi/test/"), new Progressable() {
-            public void progress() {
-                System.out.println("断点传送");
-            }
-        });
-        IOUtils.copyBytes(in, out, 4096);
+//        BufferedInputStream in = new BufferedInputStream(new FileInputStream("/Users/babywang/Documents/reserch/dev/workspace/reasech-bigdata/hadoop-study/src/main/resources/word.txt"));
+//        FSDataOutputStream out = fileSystem.create(new Path("/hdfsclient/test/word.txt"), new Progressable() {
+//            public void progress() {
+//                System.out.println("断点传送");
+//            }
+//        });
+//        IOUtils.copyBytes(in, out, 4096);
     }
 
     /**
