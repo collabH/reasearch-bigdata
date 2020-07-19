@@ -6,22 +6,21 @@ package com.research.hadoop.hdfs;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.BlockLocation;
 import org.apache.hadoop.fs.FSDataInputStream;
 import org.apache.hadoop.fs.FSDataOutputStream;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.LocatedFileStatus;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.fs.RemoteIterator;
-import org.apache.hadoop.io.IOUtils;
-import org.apache.hadoop.util.Progressable;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.BufferedInputStream;
-import java.io.FileInputStream;
+import java.io.IOException;
 import java.net.URI;
 import java.nio.charset.Charset;
+import java.util.Arrays;
 
 /**
  * @fileName: HDFSClient.java
@@ -118,9 +117,21 @@ public class HDFSClient {
      *
      * @throws Exception
      */
+    @Test
     public void copyToLocal() throws Exception {
-        fileSystem.copyFromLocalFile(new Path("/hdfsapi/test/a.txt"),
-                new Path("/User/a.txt"));
+        fileSystem.copyToLocalFile(new Path("/hdfsclient/hellowrod/word.txt"),
+                new Path("/Users/babywang/Desktop/a.txt"));
+    }
+
+    @Test
+    public void delete() {
+        boolean delete = false;
+        try {
+            delete = fileSystem.delete(new Path("/hdfsclient"), true);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println(delete ? "删除成功" : "删除失败");
     }
 
     /**
@@ -128,10 +139,22 @@ public class HDFSClient {
      *
      * @throws Exception
      */
+    @Test
     public void listFiles() throws Exception {
-        RemoteIterator<LocatedFileStatus> list = fileSystem.listFiles(new Path("/hdfsapi/text/"), true);
+        RemoteIterator<LocatedFileStatus> list = fileSystem.listFiles(new Path("/wordcount.txt"), true);
         while (list.hasNext()) {
-            System.out.println(list.next().isDirectory());
+            LocatedFileStatus locatedFileStatus = list.next();
+            //文件名
+            System.out.println(locatedFileStatus.getPath().getName());
+
+            //获取快信息
+            for (BlockLocation blockLocation : locatedFileStatus.getBlockLocations()) {
+                System.out.println(Arrays.toString(blockLocation.getCachedHosts()));
+                System.out.println(Arrays.toString(blockLocation.getHosts()));
+                System.out.println(Arrays.toString(blockLocation.getNames()));
+                System.out.println(Arrays.toString(blockLocation.getStorageTypes()));
+            }
         }
     }
+
 }
