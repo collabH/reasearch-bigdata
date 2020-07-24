@@ -54,7 +54,7 @@ public class WordCountApp2 {
         job.setMapOutputKeyClass(Text.class);
         job.setMapOutputValueClass(LongWritable.class);
 
-        job.setReducerClass(MyReducer.class);
+        job.setReducerClass(CustomCombiner.class);
         job.setOutputKeyClass(Text.class);
         job.setOutputValueClass(LongWritable.class);
 

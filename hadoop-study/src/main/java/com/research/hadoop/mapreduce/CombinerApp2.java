@@ -54,12 +54,12 @@ public class CombinerApp2 {
         job.setMapOutputKeyClass(Text.class);
         job.setMapOutputValueClass(LongWritable.class);
 
-        job.setReducerClass(MyReducer.class);
+        job.setReducerClass(CustomCombiner.class);
         job.setOutputKeyClass(Text.class);
         job.setOutputValueClass(LongWritable.class);
 
         //通过job设置combiner处理类,其实逻辑上和reduce一摸一样
-        job.setCombinerClass(MyReducer.class);
+        job.setCombinerClass(CustomCombiner.class);
 
         //设置作业处理的输出路径
         TextOutputFormat.setOutputPath(job, path);

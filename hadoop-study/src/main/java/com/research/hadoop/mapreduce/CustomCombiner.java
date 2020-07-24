@@ -11,12 +11,12 @@ import org.apache.hadoop.mapreduce.Reducer;
 import java.io.IOException;
 
 /**
- * @fileName: MyReducer.java
+ * @fileName: CustomCombiner.java
  * @description: Reduce:归并操作
  * @author: by echo huang
  * @date: 2020-02-11 11:59
  */
-public class MyReducer extends Reducer<Text, LongWritable, Text, LongWritable> {
+public class CustomCombiner extends Reducer<Text, LongWritable, Text, LongWritable> {
     /**
      * reduce方法
      *
