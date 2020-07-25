@@ -53,7 +53,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.research.hadoop.mapreduce.WordCountApp2</mainClass>
+                            <mainClass>com.research.hadoop.mr.WordCountApp2</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>

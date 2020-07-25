@@ -19,6 +19,7 @@ import java.io.IOException;
  */
 public class CustomInputFormat extends FileInputFormat<Text, BytesWritable> {
 
+
     /**
      * 不允许文件切割合并小文件
      *
