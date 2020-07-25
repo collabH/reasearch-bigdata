@@ -2,6 +2,7 @@ package com.research.hadoop.compress;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.conf.Configured;
+import org.apache.hadoop.io.compress.CompressionCodec;
 import org.apache.hadoop.io.compress.DefaultCodec;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.util.Tool;
@@ -18,7 +19,7 @@ public class MapOutputCompress extends Configured implements Tool {
     public int run(String[] strings) throws Exception {
         Configuration conf = getConf();
         conf.setBoolean("mapreduce.map.output.compress", true);
-        conf.set("mapreduce.map.output.compress.codec", DefaultCodec.class.getName());
+        conf.setClass("mapreduce.map.output.compress.codec", DefaultCodec.class, CompressionCodec.class);
         Job job = Job.getInstance(conf);
 
         return job.waitForCompletion(true) ? 0 : 1;
