@@ -28,6 +28,7 @@
         <module>stateful-function</module>
         <module>hive</module>
         <module>research-zookeeper</module>
+        <module>research-hbase</module>
     </modules>
 
 
