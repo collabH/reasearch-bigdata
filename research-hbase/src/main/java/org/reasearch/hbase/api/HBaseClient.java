@@ -1,13 +1,14 @@
 package org.reasearch.hbase.api;
 
 import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.hbase.Cell;
+import org.apache.hadoop.hbase.CellUtil;
 import org.apache.hadoop.hbase.HBaseConfiguration;
+import org.apache.hadoop.hbase.NamespaceDescriptor;
 import org.apache.hadoop.hbase.TableName;
-import org.apache.hadoop.hbase.client.Connection;
-import org.apache.hadoop.hbase.client.ConnectionFactory;
-import org.apache.hadoop.hbase.client.TableDescriptor;
-import org.apache.hadoop.hbase.client.TableDescriptorBuilder;
+import org.apache.hadoop.hbase.client.*;
 import org.apache.hadoop.hbase.security.User;
+import org.apache.hadoop.hbase.util.Bytes;
 
 import java.io.IOException;
 
@@ -38,6 +39,7 @@ public class HBaseClient {
     }
 
     /**
+     * DDL
      * 判断表是否存在
      *
      * @param tableName 表名
@@ -48,9 +50,49 @@ public class HBaseClient {
     }
 
 
+    public static void dropTable(String tableName) throws IOException {
+        connection.getAdmin().deleteTable(TableName.valueOf(tableName));
+    }
+
     public static void createTableName(String tableName) throws IOException {
-        TableDescriptor test = TableDescriptorBuilder.newBuilder(TableName.valueOf("test")).build();
+        ColumnFamilyDescriptor student = ColumnFamilyDescriptorBuilder.newBuilder(ColumnFamilyDescriptorBuilder.of("student"))
+                .setMaxVersions(1000)
+                .build();
+        TableDescriptor test = TableDescriptorBuilder.newBuilder(TableName.valueOf(tableName))
+                .setColumnFamily(student)
+                .build();
         connection.getAdmin().createTable(test);
+    }
+
+    public static void createNameSpace(String ns) throws IOException {
+        connection.getAdmin().createNamespace(NamespaceDescriptor.create(ns).build());
+    }
+
+
+    /**
+     * DML
+     */
+    public static void put(String tableName, String rowKey, String cf, String cn, String value, long ts) throws IOException {
+        Put put = new Put(Bytes.toBytes(rowKey), ts)
+                .addColumn(Bytes.toBytes(cf), Bytes.toBytes(cn), Bytes.toBytes(value));
+        Table table = connection.getTable(TableName.valueOf(tableName));
+        table.put(put);
+    }
+
+    /**
+     * get
+     */
+    public static void getData(String tableName, String rowKey, String cf, String cn) throws IOException {
+        Table table = connection.getTable(TableName.valueOf(tableName));
+        Get get = new Get(Bytes.toBytes(rowKey))
+                .addColumn(Bytes.toBytes(cf), Bytes.toBytes(cn));
+        Result result = table.get(get);
+        for (Cell cell : result.rawCells()) {
+            System.out.println(Bytes.toString(CellUtil.cloneRow(cell)));
+            System.out.println(Bytes.toString(CellUtil.cloneFamily(cell)));
+            System.out.println(Bytes.toString(CellUtil.cloneQualifier(cell)));
+            System.out.println(Bytes.toString(CellUtil.cloneValue(cell)));
+        }
     }
 
     public static void main(String[] args) throws Exception {
