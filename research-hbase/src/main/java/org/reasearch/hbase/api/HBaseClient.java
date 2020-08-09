@@ -61,7 +61,9 @@ public class HBaseClient {
                 .build();
         TableDescriptor test = TableDescriptorBuilder.newBuilder(TableName.valueOf(tableName))
                 .setColumnFamily(student)
+                .setSplitEnabled(true)
                 .build();
+        byte[][] splits = new byte[5][5];
         connection.getAdmin().createTable(test);
     }
 
@@ -146,7 +148,7 @@ public class HBaseClient {
 
         // 删除对应版本数据，type为Delete，只删除当前时间戳
         Delete deletets = new Delete(Bytes.toBytes(rowKey))
-                .addColumn(Bytes.toBytes(cf), Bytes.toBytes(cn),123421512555L);
+                .addColumn(Bytes.toBytes(cf), Bytes.toBytes(cn), 123421512555L);
 
         //type标记 Delete
         table.delete(delete);
