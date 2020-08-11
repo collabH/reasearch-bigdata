@@ -3,6 +3,7 @@ package org.telecome.producer;
 import org.telecome.common.domain.DataProducer;
 import org.telecome.producer.domain.LocalFileProducer;
 import org.telecome.producer.io.LocalFileDataIn;
+import org.telecome.producer.io.LocalFileDataOut;
 
 import java.io.IOException;
 
@@ -17,8 +18,12 @@ public class Bootstrap {
         DataProducer producer = new LocalFileProducer();
         LocalFileDataIn dataIn = new LocalFileDataIn();
         //
-        dataIn.setPath("");
+        dataIn.setPath("/Users/babywang/Downloads/contact.log");
         producer.setIn(dataIn);
+
+        LocalFileDataOut dataOut = new LocalFileDataOut();
+        dataOut.setPath("/Users/babywang/Downloads/call.log");
+        producer.setOut(dataOut);
 
         producer.produce();
         producer.close();

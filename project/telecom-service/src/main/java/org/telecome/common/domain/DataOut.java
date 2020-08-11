@@ -1,6 +1,7 @@
 package org.telecome.common.domain;
 
 import java.io.Closeable;
+import java.io.IOException;
 
 /**
  * @fileName: DataOut.java
@@ -10,5 +11,10 @@ import java.io.Closeable;
  */
 public interface DataOut extends Closeable {
     void setPath(String path);
+
+
+    void write(Object data) throws IOException;
+
+    void write(String data) throws IOException;
 
 }
