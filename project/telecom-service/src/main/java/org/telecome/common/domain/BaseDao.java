@@ -10,6 +10,8 @@ import org.apache.hadoop.hbase.TableName;
 import org.apache.hadoop.hbase.client.Admin;
 import org.apache.hadoop.hbase.client.Connection;
 import org.apache.hadoop.hbase.client.ConnectionFactory;
+import org.apache.hadoop.hbase.client.Put;
+import org.apache.hadoop.hbase.client.Table;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -39,7 +41,7 @@ public abstract class BaseDao {
      * @throws IOException
      */
     protected void createNameSpace(String namespace) throws IOException {
-        Admin admin = adminHolder.get();
+        Admin admin = getAdmin();
         String[] namespaces = admin.listNamespaces();
         if (Arrays.asList(namespaces).contains(namespace)) {
             log.error("该nameSpace:{} 已经存在", namespace);
@@ -50,17 +52,46 @@ public abstract class BaseDao {
     }
 
 
-    protected void createTable(String tableName, List<String> columnFamilies) throws IOException {
+    protected void putData(String tableName, Put put) throws IOException {
+        Connection connection = getConnection();
+        Table table = connection.getTable(TableName.valueOf(tableName));
+        table.put(put);
+    }
+
+
+    protected int genRegionNum(String tel, String date) {
+        String usercode = tel.substring(tel.length() - 4);
+        String yearMonth = date.substring(0, 6);
+
+        int usercodeHash = usercode.hashCode();
+        int yearMonthHash = yearMonth.hashCode();
+
+        // crc校验采用异或算法
+        int crc = Math.abs(usercodeHash ^ yearMonthHash);
+
+        // 基于regionCount取摸
+        return crc % 6;
+    }
+
+
+    protected void createTable(String tableName, Integer regionCount, List<String> columnFamilies) throws IOException {
         Admin admin = adminHolder.get();
         TableName table = TableName.valueOf(tableName);
         if (admin.tableExists(table)) {
+            admin.disableTable(table);
             admin.deleteTable(table);
         }
         HTableDescriptor hTableDescriptor = new HTableDescriptor(table);
         for (String columnFamily : columnFamilies) {
             hTableDescriptor.addFamily(new HColumnDescriptor(columnFamily));
         }
-        admin.createTable(hTableDescriptor);
+        if (regionCount == null || regionCount <= 0) {
+            admin.createTable(hTableDescriptor);
+        } else {
+            //分区键
+            admin.createTable(hTableDescriptor, "1|".getBytes(), "5|".getBytes(), regionCount);
+        }
+
     }
 
     protected void stop() throws Exception {

@@ -22,7 +22,7 @@ public class Consumer {
     private static Properties consumerProp = new Properties();
 
     static {
-        consumerProp.put(ConsumerConfig.GROUP_ID_CONFIG, "telecom-group-id");
+        consumerProp.put(ConsumerConfig.GROUP_ID_CONFIG, "telecom-group-id2");
         consumerProp.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
         consumerProp.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
         consumerProp.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
@@ -35,7 +35,7 @@ public class Consumer {
         consumerProp.put(ConsumerConfig.RECEIVE_BUFFER_CONFIG, 1024 * 1024 * 5);
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         KafkaConsumer<String, String> kafkaConsumer = new KafkaConsumer<>(consumerProp);
         kafkaConsumer.subscribe(Collections.singletonList("telecom-service"));
         HBaseDao dao = new HBaseDao();
