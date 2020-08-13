@@ -82,6 +82,7 @@ public abstract class BaseDao {
             admin.deleteTable(table);
         }
         HTableDescriptor hTableDescriptor = new HTableDescriptor(table);
+        hTableDescriptor.addCoprocessor("sxx");
         for (String columnFamily : columnFamilies) {
             hTableDescriptor.addFamily(new HColumnDescriptor(columnFamily));
         }
