@@ -2,6 +2,7 @@ package org.telecome.consumer;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.conf.Configured;
+import org.apache.hadoop.hbase.Cell;
 import org.apache.hadoop.hbase.client.Result;
 import org.apache.hadoop.hbase.client.Scan;
 import org.apache.hadoop.hbase.io.ImmutableBytesWritable;
@@ -63,14 +64,39 @@ public class MapReduce extends Configured implements Tool {
 class HBaseMapper extends TableMapper<Text, Text> {
     @Override
     protected void map(ImmutableBytesWritable key, Result value, Context context) throws IOException, InterruptedException {
-        super.map(key, value, context);
+
+        String rowKey = Bytes.toString(key.get());
+        String[] values = rowKey.split("_");
+
+        for (Cell cell : value.rawCells()) {
+
+        }
+
+        String call1 = values[1];
+        String calltime = values[2];
+        String duration = values[3];
+
+        // 年
+        context.write(new Text(call1 + "_" + calltime), new Text(duration));
+        // 月
+        context.write(new Text(call1 + "_" + calltime), new Text(duration));
+        // 日
+        context.write(new Text(call1 + "_" + calltime), new Text(duration));
     }
 }
 
 class HBaseReduce extends Reducer<Text, Text, Text, Text> {
     @Override
     protected void reduce(Text key, Iterable<Text> values, Context context) throws IOException, InterruptedException {
-        super.reduce(key, values, context);
+        int sumCall = 0;
+        int sumDuration = 0;
+        for (Text value : values) {
+            int duration = Integer.parseInt(value.toString());
+            sumCall += duration;
+            sumCall++;
+        }
+
+        context.write(key, new Text(sumCall + "_" + sumDuration));
     }
 }
 
