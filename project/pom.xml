@@ -14,6 +14,7 @@
     <modules>
         <module>telecom-service</module>
         <module>log-collector</module>
+        <module>event-interceptor</module>
     </modules>
 
 
