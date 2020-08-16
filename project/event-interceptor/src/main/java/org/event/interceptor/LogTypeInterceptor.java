@@ -17,6 +17,8 @@ import java.util.Map;
  */
 public class LogTypeInterceptor implements Interceptor {
 
+    private List<Event> addHeaderEvents = Lists.newArrayList();
+
     @Override
     public void initialize() {
 
@@ -30,20 +32,20 @@ public class LogTypeInterceptor implements Interceptor {
 
         // 设置header，后期选择器基于该绑定对应channel
         if (log.contains("start")) {
-            headers.put("topic", "topic_start");
+            headers.put("topic", "topic_start1");
         } else {
-            headers.put("topic", "topic_event");
+            headers.put("topic", "topic_event1");
         }
         return event;
     }
 
     @Override
     public List<Event> intercept(List<Event> list) {
-        List<Event> events = Lists.newArrayList();
+        addHeaderEvents.clear();
         for (Event event : list) {
-            events.add(intercept(event));
+            addHeaderEvents.add(intercept(event));
         }
-        return events;
+        return addHeaderEvents;
     }
 
     @Override
@@ -51,7 +53,7 @@ public class LogTypeInterceptor implements Interceptor {
 
     }
 
-    class Builder implements Interceptor.Builder {
+    public static class Builder implements Interceptor.Builder {
 
         @Override
         public Interceptor build() {

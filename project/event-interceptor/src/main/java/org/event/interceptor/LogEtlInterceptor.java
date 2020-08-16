@@ -16,6 +16,9 @@ import java.util.List;
  * @date: 2020-08-16 15:26
  */
 public class LogEtlInterceptor implements Interceptor {
+
+    private List<Event> addHeaderEvents = Lists.newArrayList();
+
     @Override
     public void initialize() {
 
@@ -40,14 +43,14 @@ public class LogEtlInterceptor implements Interceptor {
 
     @Override
     public List<Event> intercept(List<Event> list) {
-        List<Event> events = Lists.newArrayList();
+        addHeaderEvents.clear();
         for (Event event : list) {
             Event interceptEvent = intercept(event);
             if (interceptEvent != null) {
-                events.add(event);
+                addHeaderEvents.add(event);
             }
         }
-        return events;
+        return addHeaderEvents;
     }
 
     @Override
@@ -55,11 +58,11 @@ public class LogEtlInterceptor implements Interceptor {
 
     }
 
-    class Builder implements Interceptor.Builder {
+    public static class Builder implements Interceptor.Builder {
 
         @Override
         public Interceptor build() {
-            return new LogTypeInterceptor();
+            return new LogEtlInterceptor();
         }
 
         @Override
