@@ -10,5 +10,5 @@ create external table if not exists wh_ods.ods_start_log
     tblproperties ('author' = 'hsm','date' = '20200818','desc' = '启动日志表');
 
 
-load data inpath 'hdfs://hadoop:8020/flume/gmall/log/topic_start1/20-08-18/'
-    overwrite into table wh_ods.ods_start_log partition (ds = '2020-08-18')
+load data inpath 'hdfs://hadoop:8020/flume/gmall/log/topic_start1/20-08-19/'
+    overwrite into table wh_ods.ods_start_log partition (ds = '2020-08-19')

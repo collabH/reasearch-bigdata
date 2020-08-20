@@ -16,6 +16,7 @@
         <module>log-collector</module>
         <module>event-interceptor</module>
         <module>function</module>
+        <module>warehouse-offline</module>
     </modules>
 
 
