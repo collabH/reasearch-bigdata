@@ -1,4 +1,4 @@
-package com.warehouse.ads
+package com.warehouse.log.ads
 
 import com.warehouse.context.Context
 import org.apache.spark.sql.functions._

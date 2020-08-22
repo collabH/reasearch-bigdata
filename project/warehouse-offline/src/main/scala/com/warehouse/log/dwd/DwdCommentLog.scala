@@ -1,4 +1,4 @@
-package com.warehouse.dwd
+package com.warehouse.log.dwd
 
 import com.alibaba.fastjson.{JSON, JSONObject}
 import com.warehouse.context.Context
@@ -10,19 +10,19 @@ import org.apache.spark.sql.{Dataset, SaveMode, SparkSession}
   * @author: by echo huang
   * @date: 2020-08-20 21:15
   */
-object DwdActiveForegroundLog {
+object DwdCommentLog {
   def main(args: Array[String]): Unit = {
-    val spark: SparkSession = Context.getRunContext("dwd_active_foreground_log", "local[8]")
+    val spark: SparkSession = Context.getRunContext("dwd_comment_log", "local[8]")
 
     import spark.implicits._
     val dwdEvent: Dataset[DwdEventDo] = spark.read.table("wh_dwd.dwd_event_log")
-      .where($"eventName" === "active_foreground")
+      .where($"eventName" === "comment")
       .as[DwdEventDo]
 
     dwdEvent.map((event: DwdEventDo) => {
       val json: String = event.eventJson
       val nObject: JSONObject = JSON.parseObject(json)
-      val log: DwdActiveForegroundLog = JSON.parseObject(nObject.getString("kv"), classOf[DwdActiveForegroundLog])
+      val log: DwdCommentLog = JSON.parseObject(nObject.getString("kv"), classOf[DwdCommentLog])
       log.ett = nObject.getString("ett")
       log.ln = event.ln
       log.sv = event.sv
@@ -47,16 +47,17 @@ object DwdActiveForegroundLog {
     }).write
       .format("parquet")
       .mode(saveMode = SaveMode.Overwrite)
-      .saveAsTable("wh_dwd.dwd_active_foreground_log")
+      .saveAsTable("wh_dwd.dwd_comment_log")
 
     spark.close()
   }
 
 }
 
-case class DwdActiveForegroundLog(var ln: String, var sv: String, var os: String, var g: String, var mid: String, var nw: String,
-                                  var l: String, var vc: String, var hw: String, var ar: String, var uid: String, var t: String, var la: String, var md: String,
-                                  var vn: String, var ba: String, var sr: String, var serverTime: String,
-                                  pushId: String, access: String, var ett: String, var ds: String) {
+case class DwdCommentLog(var ln: String, var sv: String, var os: String, var g: String, var mid: String, var nw: String,
+                         var l: String, var vc: String, var hw: String, var ar: String, var uid: String, var t: String, var la: String, var md: String,
+                         var vn: String, var ba: String, var sr: String, var serverTime: String, commentId: Int,
+                         userid: Int, pCommendId: Int, content: String, addtime: String, otherId: Int, praiseCount: Int, replyCount: Int,
+                         var ett: String, var ds: String) {
 
 }

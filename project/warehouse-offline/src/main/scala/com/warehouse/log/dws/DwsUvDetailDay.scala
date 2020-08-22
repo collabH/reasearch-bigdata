@@ -1,4 +1,4 @@
-package com.warehouse.dws
+package com.warehouse.log.dws
 
 import com.warehouse.context.Context
 import org.apache.spark.sql.functions._

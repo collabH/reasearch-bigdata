@@ -1,4 +1,4 @@
-package com.warehouse.dwd
+package com.warehouse.log.dwd
 
 import com.alibaba.fastjson.{JSON, JSONArray, JSONObject}
 import com.warehouse.context.Context
