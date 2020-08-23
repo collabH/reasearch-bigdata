@@ -22,7 +22,7 @@ object Context {
       .config("spark.default.parallelism", "3")
       .master(master)
       .appName(appName)
-      .enableHiveSupport().getOrCreate();
+      .enableHiveSupport().getOrCreate()
   }
 
 }

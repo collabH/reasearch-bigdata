@@ -42,12 +42,12 @@ object DwdSkuInfo {
     // 读取ods_sku_info表
     val odsSkuInfo: Dataset[Row] = spark.table("ods_sku_info")
       .where($"id".isNotNull)
-      .where($"price".geq(0))
+      .where($"price".geq(0)).cache()
     val category1: Dataset[Row] = spark.table("ods_base_category1")
-      .where($"id".isNotNull)
+      .where($"id".isNotNull).cache()
 
     val category2: Dataset[Row] = spark.table("ods_base_category2")
-      .where($"id".isNotNull)
+      .where($"id".isNotNull).cache()
 
     val category3: Dataset[Row] = spark.table("ods_base_category3")
       .where($"id".isNotNull)
