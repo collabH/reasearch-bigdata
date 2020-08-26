@@ -20,6 +20,9 @@ class BaseType {
     val f = 10.0f
 
     val name = "10"
+    val bigInt: BigInt = 10
+
+    val bigDecimal: BigDecimal = BigDecimal.apply(1)
 
     //类型转换
     val i = name.asInstanceOf[Int]

@@ -57,8 +57,24 @@ object CirculateExpression {
   }
 
   def main(args: Array[String]): Unit = {
-    toFor()
-    untilFor()
-    arrayFor()
+    //    toFor()
+    //    untilFor()
+    //    arrayFor()
+    Range(1, 10, 2)
+    //    use
+    print(1 + 1)
+    print(1 *  100)
+    var a,c=1
+    a=c
+    print(a)
+  }
+
+  def getName = {
+    ("hsm", "hello", "laoge")
+  }
+
+  def use = {
+    val (name, say, flag) = getName
+    print(name, say, flag)
   }
 }

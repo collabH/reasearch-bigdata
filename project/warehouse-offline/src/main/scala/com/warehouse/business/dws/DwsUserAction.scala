@@ -12,6 +12,9 @@ import org.apache.spark.sql.{DataFrame, SaveMode, SparkSession}
   */
 object DwsUserAction {
   def main(args: Array[String]): Unit = {
+
+    System.setProperty("spark.serializer","spark.KryoSerializer")
+
     val spark: SparkSession = Context.getRunContext("dws_user_action", "local[8]")
 
 
