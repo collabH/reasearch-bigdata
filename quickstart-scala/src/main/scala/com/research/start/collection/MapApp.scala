@@ -1,23 +1,34 @@
 package com.research.start.collection
 
-import scala.collection.mutable
-
 /**
-  * @fileName: MapApp.java
-  * @description: MapApp.java类说明
-  * @author: by echo huang
-  * @date: 2020-03-12 18:41
-  */
+ * @fileName: MapApp.java
+ * @description: MapApp.java类说明
+ * @author: by echo huang
+ * @date: 2020-03-12 18:41
+ */
 object MapApp extends App {
+  // create
+  val map = Map("hsm" -> 24, "wy" -> 24)
+  println(map)
 
-  private val map: mutable.HashMap[String, String] = scala.collection.mutable.HashMap[String, String]()
+  // filter
+  map filter { case (name: String, age: Int) =>
+    println(s"$name --- $age")
+    "hsm".equals(name) && 24 == age
+  } foreach (println)
 
+  // get
+  println(map("hsm"))
+  println(map.get("wy"))
+  println(map get "wy")
 
-  map.put("hello", "最近啊美好")
+  // put 不可变
+  println(map.+("zzl" -> 24))
+  println(map.+(("ls", 11)))
+  println(map.+("hsm1"))
 
-  private val iterator: Iterator[(String, String)] = map.iterator
-  while (iterator.hasNext) {
-    println(iterator.next())
-  }
+  // update 向不变容器添加元素
+  private val stringToInt: Map[String, Int] = map.updated("wy1", 24)
 
+  println(map)
 }
