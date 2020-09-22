@@ -14,6 +14,9 @@ class ExceptionDemo {
     } catch {
       case interruptedException: InterruptedException =>
         println("xxx")
+      case _=>{
+        println("not exception")
+      }
     }
   }
 }

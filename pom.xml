@@ -30,6 +30,7 @@
         <module>research-zookeeper</module>
         <module>research-hbase</module>
         <module>project</module>
+        <module>kudu-demo</module>
     </modules>
 
 
