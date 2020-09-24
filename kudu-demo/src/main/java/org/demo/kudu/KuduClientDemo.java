@@ -27,7 +27,8 @@ public class KuduClientDemo {
 
         // 添加列
         List<ColumnSchema> columns = Lists.newArrayList();
-        columns.add(new ColumnSchema.ColumnSchemaBuilder("key", Type.INT32).key(true).build());
+        columns.add(new ColumnSchema.ColumnSchemaBuilder("key", Type.INT32)
+                .key(true).build());
         columns.add(new ColumnSchema.ColumnSchemaBuilder("value", Type.STRING).build());
 
         // 创建schema
@@ -60,7 +61,7 @@ public class KuduClientDemo {
                 .build();
         while (scanner.hasMoreRows()) {
             RowResultIterator rowResults = scanner.nextRows();
-            while (rowResults.hasNext()){
+            while (rowResults.hasNext()) {
                 RowResult next = rowResults.next();
                 System.out.println(next);
             }
@@ -73,9 +74,22 @@ public class KuduClientDemo {
         // 创建表
         KuduTable createTable = client.createTable(KUDU_TABLE_NAME, schema, new CreateTableOptions()
                 .setRangePartitionColumns(rangeKeys)
+                .addHashPartitions(Lists.newArrayList("key"), 4)
                 .setOwner("huangshimin")
                 .setNumReplicas(1));
         System.out.println(createTable.toString());
+    }
+
+    private static void rangePartition(KuduClient client) throws KuduException {
+        KuduTable kuduTable = client.openTable(KUDU_TABLE_NAME);
+
+        PartialRow lower = kuduTable.getSchema().newPartialRow();
+        lower.addInt("key", 1);
+
+        PartialRow upper = kuduTable.getSchema().newPartialRow();
+        upper.addInt("key", 10);
+
+        new CreateTableOptions().addRangePartition(lower, upper);
     }
 
     private static void insertKudu(KuduClient client) throws KuduException {
@@ -89,5 +103,31 @@ public class KuduClientDemo {
         row.addString(1, "sbhejiawang");
         // 执行插入数据
         session.apply(insert);
+    }
+
+    private static void deleteKudu(KuduClient client) throws KuduException {
+        KuduTable kuduTable = client.openTable(KUDU_TABLE_NAME);
+        KuduSession kuduSession = client.newSession();
+        kuduSession.setFlushMode(SessionConfiguration.FlushMode.AUTO_FLUSH_SYNC);
+        Delete delete = kuduTable.newDelete();
+        PartialRow row = delete.getRow();
+        row.addInt("key", 1);
+
+        kuduSession.apply(delete);
+    }
+
+    private static void updateKudu(KuduClient client) throws KuduException {
+        KuduTable kuduTable = client.openTable(KUDU_TABLE_NAME);
+        KuduSession kuduSession = client.newSession();
+        kuduSession.setFlushMode(SessionConfiguration.FlushMode.AUTO_FLUSH_SYNC);
+
+        Update update = kuduTable.newUpdate();
+
+        // 修改数据
+        PartialRow row = update.getRow();
+        row.addInt("id", 1);
+        row.addString("value", "hhhh");
+
+        kuduSession.apply(update);
     }
 }
