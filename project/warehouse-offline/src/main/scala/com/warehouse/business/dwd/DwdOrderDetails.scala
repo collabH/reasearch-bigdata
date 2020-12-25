@@ -2,7 +2,7 @@ package com.warehouse.business.dwd
 
 import com.warehouse.context.Context
 import org.apache.spark.sql.{SaveMode, SparkSession}
-
+import  org.apache.spark.sql.functions._;
 /**
   * @fileName: DwdOrderDetails.java
   * @description: DwdOrderDetails.java类说明

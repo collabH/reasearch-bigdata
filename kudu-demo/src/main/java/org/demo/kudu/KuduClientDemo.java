@@ -16,7 +16,7 @@ import java.util.List;
  */
 public class KuduClientDemo {
 
-    private static final String KUDU_MASTER_SERVER_ADDRESS = "192.168.6.50:7051,192.168.6.52:7051,192.168.6.51:7051";
+    private static final String KUDU_MASTER_SERVER_ADDRESS = "cdh01:7051,cdh02:7051,cdh03:7051";
 
     private static final String KUDU_TABLE_NAME = "test_kud";
 
@@ -39,11 +39,11 @@ public class KuduClientDemo {
 
         try {
             // 创建表
-//            createKudu(client, schema, rangeKeys);
+            createKudu(client, schema, rangeKeys);
             // 插入数据
 //            insertKudu(client);
             // 查询数据
-            queryKudu(client);
+//            queryKudu(client);
             client.close();
         } catch (KuduException e) {
             e.printStackTrace();
@@ -53,7 +53,7 @@ public class KuduClientDemo {
     private static void queryKudu(KuduClient client) throws KuduException {
 
         List<String> projectColumns = Lists.newArrayList();
-        projectColumns.add("value");
+        projectColumns.add("key");
 
         // 构建扫描器
         KuduScanner scanner = client.newScannerBuilder(client.openTable(KUDU_TABLE_NAME))
@@ -71,9 +71,19 @@ public class KuduClientDemo {
 
 
     private static void createKudu(KuduClient client, Schema schema, List<String> rangeKeys) throws KuduException {
+        try {
+            client.deleteTable(KUDU_TABLE_NAME);
+        } catch (KuduException e) {
+
+        }
+        PartialRow partialRow = schema.newPartialRow();
+        PartialRow partialRow1 = schema.newPartialRow();
+        partialRow.addInt("key", 10);
+        partialRow1.addInt("key", 20);
         // 创建表
         KuduTable createTable = client.createTable(KUDU_TABLE_NAME, schema, new CreateTableOptions()
-                .setRangePartitionColumns(rangeKeys)
+//                .setRangePartitionColumns(rangeKeys)
+                .addRangePartition(partialRow, partialRow1)
                 .addHashPartitions(Lists.newArrayList("key"), 4)
                 .setOwner("huangshimin")
                 .setNumReplicas(1));

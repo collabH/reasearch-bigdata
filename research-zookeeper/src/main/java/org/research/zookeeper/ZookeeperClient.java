@@ -1,6 +1,9 @@
 package org.research.zookeeper;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.jute.InputArchive;
+import org.apache.jute.OutputArchive;
+import org.apache.jute.Record;
 import org.apache.zookeeper.KeeperException;
 import org.apache.zookeeper.ZooDefs;
 import org.apache.zookeeper.ZooKeeper;
@@ -18,7 +21,7 @@ import java.util.List;
  * @date: 2020-07-26 22:34
  */
 @Slf4j
-public class ZookeeperClient {
+public class ZookeeperClient implements Record {
 
     private ZkNodeOperator zkNodeOperator;
 
@@ -46,5 +49,14 @@ public class ZookeeperClient {
     public void znodeIsExsits() throws KeeperException, InterruptedException {
         Stat exists = zkNodeOperator.zk.exists("/name/wy", false);
         System.out.println(exists);
+    }
+
+    @Override
+    public void serialize(OutputArchive outputArchive, String s) throws IOException {
+    }
+
+    @Override
+    public void deserialize(InputArchive inputArchive, String s) throws IOException {
+
     }
 }
