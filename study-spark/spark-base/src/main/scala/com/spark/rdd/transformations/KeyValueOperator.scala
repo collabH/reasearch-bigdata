@@ -16,11 +16,11 @@ object KeyValueOperator extends App {
     //    reduceByKeyOperator(sc)
     //    aggregateByKeyOperator(sc)
     //    foldByKeyOperator(sc)
-    //    combineByKeyOperator(sc)
+        combineByKeyOperator(sc)
     //    sortByKeyOperator(sc)
     //    mapValuesOperator(sc)
     //    joinOperator(sc)
-    coGroupOperator(sc)
+//    coGroupOperator(sc)
   }
 
   /**

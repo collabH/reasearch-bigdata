@@ -19,12 +19,12 @@ object ValueOperator extends App {
     //    filterOperator(sc)
     //    mapPartitionOperator(sc)
     //    mapPartitionWithIndexOperator(sc)
-    //    flatMapOperator(sc)
+        flatMapOperator(sc)
     //    glomOperator(sc)
     //    groupByOperator(sc)
     //    sampleOperator(sc)
     //    distinctOperator(sc)
-    coalesceOperator(sc)
+//    coalesceOperator(sc)
   }
 
   /**
@@ -60,6 +60,8 @@ object ValueOperator extends App {
     val rdd = sc.makeRDD(List(1, 2, 3, 4, 5, 6, 7, 1, 2, 4, 6))
     rdd.distinct().collect()
       .foreach(println)
+
+    rdd.pipe("")
   }
 
   /**
@@ -121,8 +123,8 @@ object ValueOperator extends App {
     */
   def mapPartitionWithIndexOperator(sc: SparkContext): Unit = {
     val rdd = sc.makeRDD(List(1, 2, 3, 4, 5, 6), 2)
-    rdd.mapPartitionsWithIndex((index, datas) => {
-      datas.map(_ + "Hello" + index)
+    rdd.mapPartitionsWithIndex((index: Int, datas: Iterator[Int]) => {
+      datas.map((_: Int) + "Hello" + index)
     })
       .collect()
       .foreach(println)
@@ -150,7 +152,7 @@ object ValueOperator extends App {
     */
   def filterOperator(sc: SparkContext): Unit = {
     sc.makeRDD(List("hello", null, "world"))
-      .filter(v => {
+      .filter((v: String) => {
         Objects.nonNull(v)
       })
       .collect()
