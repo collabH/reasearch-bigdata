@@ -82,9 +82,9 @@ public class KuduClientDemo {
         partialRow1.addInt("key", 20);
         // 创建表
         KuduTable createTable = client.createTable(KUDU_TABLE_NAME, schema, new CreateTableOptions()
-//                .setRangePartitionColumns(rangeKeys)
+                .setRangePartitionColumns(rangeKeys)
                 .addRangePartition(partialRow, partialRow1)
-                .addHashPartitions(Lists.newArrayList("key"), 4)
+//                .addHashPartitions(Lists.newArrayList("key"), 4)
                 .setOwner("huangshimin")
                 .setNumReplicas(1));
         System.out.println(createTable.toString());
