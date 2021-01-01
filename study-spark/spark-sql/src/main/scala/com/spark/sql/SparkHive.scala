@@ -1,8 +1,9 @@
 package com.spark.sql
 
+import org.apache.spark.sql.expressions.Window
 import org.apache.spark.sql.{DataFrame, SparkSession}
 import org.apache.spark.{SparkConf, SparkContext}
-
+import org.apache.spark.sql.functions._
 /**
  * @fileName: SparkHive.java
  * @description: SparkHive.java类说明
@@ -52,7 +53,7 @@ object SparkHive extends App {
       .config("spark.sql.parquet.writeLegacyFormat", "true")
       .enableHiveSupport()
       .getOrCreate()
-
+import  spark.implicits._
     //    spark.sql("show databases").show()
 
     spark.sql("use wh_dwd")
@@ -60,7 +61,14 @@ object SparkHive extends App {
 
     val startLog: DataFrame = spark.table("dwd_start_log")
 
-    startLog.show()
+    startLog
+      .select(expr("ba"))
+      .select(column("ba"))
+      .select(col("ba"))
+      .select($"ba")
+      .select("ba")
+      .select(row_number().over(Window.partitionBy($"ba").orderBy(desc("ds"))).as("rn")).show(1)
+
     spark.stop()
   }
 
