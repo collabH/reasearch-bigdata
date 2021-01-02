@@ -69,6 +69,9 @@ import  spark.implicits._
       .select("ba")
       .select(row_number().over(Window.partitionBy($"ba").orderBy(desc("ds"))).as("rn")).show(1)
 
+
+    // handle null
+    startLog.select(when($"id".isNull,$"ba"))
     spark.stop()
   }
 

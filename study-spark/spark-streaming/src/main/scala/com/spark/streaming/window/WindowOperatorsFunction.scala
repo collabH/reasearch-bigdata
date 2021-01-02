@@ -5,7 +5,7 @@ import org.apache.kafka.common.serialization.StringDeserializer
 import org.apache.spark.SparkConf
 import org.apache.spark.streaming.dstream.DStream
 import org.apache.spark.streaming.kafka010.{ConsumerStrategies, KafkaUtils, LocationStrategies}
-import org.apache.spark.streaming.{Seconds, StreamingContext}
+import org.apache.spark.streaming.{Durations, Seconds, StreamingContext}
 
 /**
   * @fileName: WindowOperatorsFunction.java
@@ -32,6 +32,7 @@ object WindowOperatorsFunction {
       consumerStrategy = ConsumerStrategies.Subscribe[String, String](List("stateful-topic"), params)).map(record => {
       record.value()
     })
-  }
+    kafkaStream.window(windowDuration = Durations.seconds(10), Durations.seconds(10))
+ }
 
 }
