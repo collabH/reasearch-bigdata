@@ -51,6 +51,10 @@ object SparkHive extends App {
       .config("spark.default.parallelism", "10")
       .config("spark.mapreduce.fileoutputcommitter.marksuccessfuljobs", "false")
       .config("spark.sql.parquet.writeLegacyFormat", "true")
+      // 将持续慢的Executor移除，防止Exector倾斜问题
+      .config("spark.speculation", "true")
+      // 增大AppendOnlyMap的大小防止Shuffle的数据写满AppendOnlyMap后溢写磁盘导致Shuffle过慢
+      .config("spark.shuffle.memoryFraction", "0.4")
       .enableHiveSupport()
       .getOrCreate()
 import  spark.implicits._
