@@ -31,6 +31,7 @@
         <module>research-hbase</module>
         <module>project</module>
         <module>kudu-demo</module>
+        <module>rocksdb-learning</module>
     </modules>
 
 
