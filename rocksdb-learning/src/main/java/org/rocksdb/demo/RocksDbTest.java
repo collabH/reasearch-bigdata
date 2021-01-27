@@ -4,6 +4,7 @@ import org.rocksdb.ColumnFamilyDescriptor;
 import org.rocksdb.ColumnFamilyHandle;
 import org.rocksdb.ColumnFamilyOptions;
 import org.rocksdb.DBOptions;
+import org.rocksdb.Env;
 import org.rocksdb.Options;
 import org.rocksdb.RocksDB;
 import org.rocksdb.RocksDBException;
@@ -22,8 +23,20 @@ import java.util.List;
 public class RocksDbTest {
     private static final String DB_PATH = "/Users/babywang/Desktop/testrocksdb";
 
-    public static void main(String[] args) {
+    private static final String HDFS_DB_PATH = "hdfs://cluster01/user/flink";
 
+    static {
+        RocksDB.loadLibrary();
+    }
+    public static void main(String[] args) {
+//        Env env = new HdfsEnv();
+        try (final Options options = new Options().setCreateIfMissing(true)) {
+            try (final RocksDB db = RocksDB.open(options, HDFS_DB_PATH)) {
+                db.put("test".getBytes(), "张三".getBytes(StandardCharsets.UTF_8));
+            } catch (RocksDBException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public void openDataBaseWithColumnFamilies() {
