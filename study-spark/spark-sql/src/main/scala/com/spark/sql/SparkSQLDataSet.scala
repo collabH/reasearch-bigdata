@@ -2,25 +2,29 @@ package com.spark.sql
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.apache.spark.rdd.RDD
-import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.{Dataset, SparkSession}
 
 
 /**
-  * @fileName: SparkSQLDataSet.java
-  * @description: DataSet API
-  * @author: by echo huang
-  * @date: 2020-06-30 00:04
-  */
+ * @fileName: SparkSQLDataSet.java
+ * @description: DataSet API
+ * @author: by echo huang
+ * @date: 2020-06-30 00:04
+ */
 object SparkSQLDataSet extends App {
   override def main(args: Array[String]): Unit = {
     val spark = SparkSession.builder()
       .master("local")
       .appName("dataset")
       .getOrCreate()
-        createDataSet(spark)
+    createDataSet(spark)
     //    rddToDataSet(spark)
     //    dataFrameToDataset(spark)
-//    SeqToDataSet(spark)
+    //    SeqToDataSet(spark)
+    import spark.implicits._
+    val csvDomain: Dataset[Person] = spark.read.csv("test")
+      .as[Person]
+
   }
 
   case class Person(name: String, age: Long)

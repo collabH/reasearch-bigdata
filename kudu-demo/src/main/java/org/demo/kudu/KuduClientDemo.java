@@ -16,7 +16,7 @@ import java.util.List;
  */
 public class KuduClientDemo {
 
-    private static final String KUDU_MASTER_SERVER_ADDRESS = "cdh01:7051,cdh02:7051,cdh03:7051";
+    private static final String KUDU_MASTER_SERVER_ADDRESS = "hadoop:7051";
 
     private static final String KUDU_TABLE_NAME = "test_kud";
 
@@ -41,9 +41,9 @@ public class KuduClientDemo {
             // 创建表
             createKudu(client, schema, rangeKeys);
             // 插入数据
-//            insertKudu(client);
+            insertKudu(client);
             // 查询数据
-//            queryKudu(client);
+            queryKudu(client);
             client.close();
         } catch (KuduException e) {
             e.printStackTrace();
@@ -82,12 +82,11 @@ public class KuduClientDemo {
         partialRow1.addInt("key", 20);
         // 创建表
         KuduTable createTable = client.createTable(KUDU_TABLE_NAME, schema, new CreateTableOptions()
-                .setRangePartitionColumns(rangeKeys)
-                .addRangePartition(partialRow, partialRow1)
-//                .addHashPartitions(Lists.newArrayList("key"), 4)
+//                .setRangePartitionColumns(rangeKeys)
+//                .addRangePartition(partialRow, partialRow1)
+                .addHashPartitions(Lists.newArrayList("key"), 4)
                 .setOwner("huangshimin")
                 .setNumReplicas(1));
-        System.out.println(createTable.toString());
     }
 
     private static void rangePartition(KuduClient client) throws KuduException {
