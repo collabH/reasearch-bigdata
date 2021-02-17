@@ -3,11 +3,11 @@ package com.spark.sql.readsave
 import org.apache.spark.sql.{DataFrame, SaveMode, SparkSession}
 
 /**
-  * @fileName: SparkSqlReadData.java
-  * @description: 读取数据
-  * @author: by echo huang
-  * @date: 2020-06-30 23:17
-  */
+ * @fileName: SparkSqlReadData.java
+ * @description: 读取数据
+ * @author: by echo huang
+ * @date: 2020-06-30 23:17
+ */
 object SparkSqlReadData extends App {
   override def main(args: Array[String]): Unit = {
     val sparkSqlReadData = new SparkSqlReadData
@@ -20,8 +20,8 @@ object SparkSqlReadData extends App {
 
 
   /**
-    * 读取默认的parqeut格式文件
-    */
+   * 读取默认的parqeut格式文件
+   */
   def loadData(sparkSqlReadData: SparkSqlReadData) = {
     val spark = sparkSqlReadData.get()
     val df: DataFrame = spark.read.load("file:///Users/babywang/Documents/reserch/dev/workspace/reasech-bigdata/output")
@@ -31,10 +31,10 @@ object SparkSqlReadData extends App {
   }
 
   /**
-    * 指定特定格式读取
-    *
-    * @param sparkSqlReadData
-    */
+   * 指定特定格式读取
+   *
+   * @param sparkSqlReadData
+   */
   def assignFormatRead(sparkSqlReadData: SparkSqlReadData) = {
     val spark = sparkSqlReadData.get()
     val df = spark.read.format("json").load("file:///Users/babywang/Documents/reserch/studySummary/bigdata/spark/spark.json")
@@ -43,29 +43,36 @@ object SparkSqlReadData extends App {
   }
 
   /**
-    * 默认格式保存文件
-    *
-    * @param sparkSqlReadData
-    */
+   * 默认格式保存文件
+   *
+   * @param sparkSqlReadData
+   */
   def saveData(sparkSqlReadData: SparkSqlReadData) = {
     val df = loadData(sparkSqlReadData)
     df.write.save("output")
   }
 
+
+  def bucketSave(sparkSqlReadData: SparkSqlReadData) = {
+    val frame: DataFrame = loadData(sparkSqlReadData)
+    frame.write.bucketBy(10, "id")
+      .saveAsTable("bucketFiles")
+  }
+
   /**
-    *
-    * @param sparkSqlReadData
-    */
+   *
+   * @param sparkSqlReadData
+   */
   def assignFormatSave(sparkSqlReadData: SparkSqlReadData) = {
     val df = assignFormatRead(sparkSqlReadData)
     df.write.mode(SaveMode.Overwrite).format("json").save("output")
   }
 
   /**
-    * 存储成table格式
-    *
-    * @param sparkSqlReadData
-    */
+   * 存储成table格式
+   *
+   * @param sparkSqlReadData
+   */
   def saveTable(sparkSqlReadData: SparkSqlReadData) = {
     val df = assignFormatRead(sparkSqlReadData)
     df.write.mode(SaveMode.Overwrite).saveAsTable("user")
