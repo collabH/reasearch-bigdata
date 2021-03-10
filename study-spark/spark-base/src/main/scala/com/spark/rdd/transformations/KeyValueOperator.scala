@@ -3,11 +3,11 @@ package com.spark.rdd.transformations
 import org.apache.spark.{HashPartitioner, SparkContext}
 
 /**
-  * @fileName: KeyValueOperator.java
-  * @description: key-value类型
-  * @author: by echo huang
-  * @date: 2020-06-27 00:29
-  */
+ * @fileName: KeyValueOperator.java
+ * @description: key-value类型
+ * @author: by echo huang
+ * @date: 2020-06-27 00:29
+ */
 object KeyValueOperator extends App {
   override def main(args: Array[String]): Unit = {
     val sc = new SparkContext("local", "keyValueOperator")
@@ -16,16 +16,16 @@ object KeyValueOperator extends App {
     //    reduceByKeyOperator(sc)
     //    aggregateByKeyOperator(sc)
     //    foldByKeyOperator(sc)
-        combineByKeyOperator(sc)
+    combineByKeyOperator(sc)
     //    sortByKeyOperator(sc)
     //    mapValuesOperator(sc)
     //    joinOperator(sc)
-//    coGroupOperator(sc)
+    //    coGroupOperator(sc)
   }
 
   /**
-    * partitionBy算子
-    */
+   * partitionBy算子
+   */
   def partitionByOperator(sc: SparkContext) = {
     val rdd = sc.makeRDD(Array((1, "aaa"), (2, "bbb"), (3, "ccc"), (4, "ddd")), 4)
     rdd.partitionBy(new HashPartitioner(2))
@@ -33,21 +33,24 @@ object KeyValueOperator extends App {
   }
 
   /**
-    * groupByKey算子
-    *
-    * @param sc
-    */
+   * groupByKey算子
+   *
+   * @param sc
+   */
   def groupByKyeOperator(sc: SparkContext) = {
     val rdd = sc.makeRDD(Array(("aaa", 1), ("bbb", 1), ("ccc", 1), ("ddd", 1), ("ccc", 1), ("bbb", 1)))
+    rdd.cache()
+    rdd.persist()
+    rdd.unpersist()
     rdd.groupByKey(new HashPartitioner(2))
       .saveAsTextFile("output")
   }
 
   /**
-    * reduceByKey
-    *
-    * @param sc
-    */
+   * reduceByKey
+   *
+   * @param sc
+   */
   def reduceByKeyOperator(sc: SparkContext) = {
     val rdd = sc.makeRDD(Array(("aaa", 1), ("bbb", 1), ("ccc", 1), ("ddd", 1), ("ccc", 1), ("bbb", 1)))
     rdd.reduceByKey(_ + _)
@@ -57,10 +60,10 @@ object KeyValueOperator extends App {
 
 
   /**
-    * aggregateByKey算子
-    *
-    * @param sc
-    */
+   * aggregateByKey算子
+   *
+   * @param sc
+   */
   def aggregateByKeyOperator(sc: SparkContext) = {
     val rdd = sc.makeRDD(Array(("a", 1), ("a", 2), ("b", 1), ("b", 4), ("c", 1), ("d", 1)), 2)
     rdd.aggregateByKey(0)(math.max, _ + _)
@@ -69,10 +72,10 @@ object KeyValueOperator extends App {
   }
 
   /**
-    * foldByKey
-    *
-    * @param sc
-    */
+   * foldByKey
+   *
+   * @param sc
+   */
   def foldByKeyOperator(sc: SparkContext) = {
     val rdd = sc.makeRDD(Array(("a", 1), ("a", 2), ("b", 1), ("b", 4), ("c", 1), ("d", 1)), 2)
     rdd.foldByKey(0)(_ + _)
@@ -81,11 +84,11 @@ object KeyValueOperator extends App {
   }
 
   /**
-    * combineByKey
-    *
-    * @param sc
-    * @return
-    */
+   * combineByKey
+   *
+   * @param sc
+   * @return
+   */
   def combineByKeyOperator(sc: SparkContext) = {
     val rdd = sc.makeRDD(Array(("a", 1), ("a", 2), ("b", 1), ("b", 4), ("c", 1), ("d", 1)), 2)
     rdd.combineByKey((_, 1), (acc: (Int, Int), v) => (acc._1 + v, acc._2 + 1),
@@ -95,10 +98,10 @@ object KeyValueOperator extends App {
   }
 
   /** *
-    * sortByKey
-    *
-    * @param sc
-    */
+   * sortByKey
+   *
+   * @param sc
+   */
   def sortByKeyOperator(sc: SparkContext) = {
     val rdd = sc.makeRDD(Array(("aaa", 1), ("bbb", 1), ("ccc", 1), ("ddd", 1), ("ccc", 1), ("bbb", 1)))
     rdd.sortByKey(ascending = false)
@@ -107,10 +110,10 @@ object KeyValueOperator extends App {
   }
 
   /**
-    * mapValues算子
-    *
-    * @param sc
-    */
+   * mapValues算子
+   *
+   * @param sc
+   */
   def mapValuesOperator(sc: SparkContext) = {
     val rdd = sc.makeRDD(Array(("aaa", 1), ("bbb", 1), ("ccc", 1), ("ddd", 1), ("ccc", 1), ("bbb", 1)))
     rdd.mapValues(_ + 1)
@@ -119,10 +122,10 @@ object KeyValueOperator extends App {
   }
 
   /**
-    * join
-    *
-    * @param sc
-    */
+   * join
+   *
+   * @param sc
+   */
   def joinOperator(sc: SparkContext) = {
     val kv1 = sc.makeRDD(List((1, "aa"), (2, "cc"), (3, "vv")))
     val kv2 = sc.makeRDD(List((1, 4), (2, 123), (3, 23)))
@@ -132,10 +135,10 @@ object KeyValueOperator extends App {
   }
 
   /**
-    * coGroup
-    *
-    * @param sc
-    */
+   * coGroup
+   *
+   * @param sc
+   */
   def coGroupOperator(sc: SparkContext) = {
     val kv1 = sc.makeRDD(List((1, "aa"), (2, "cc"), (3, "vv")))
     val kv2 = sc.makeRDD(List((1, 4), (2, 123), (3, 23)))
