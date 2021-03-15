@@ -47,25 +47,26 @@ public class Consumer1 {
     public static void main(String[] args) {
         KafkaConsumer<String, String> consumer = new KafkaConsumer<>(buildConsumerProp());
         ArrayList<String> topics = new ArrayList<>();
-        topics.add("event_topic");
+        topics.add("polardb_small1.ninth_studio.wechat_user_friends");
         consumer.subscribe(topics);
         // 每1秒拉取一条消息
         while (true) {
             ConsumerRecords<String, String> poll = consumer.poll(Duration.ofSeconds(1));
 
             for (ConsumerRecord<String, String> record : poll) {
-                JSONObject jsonObject = JSON.parseObject(record.value());
-                String event = String.valueOf(jsonObject.get("event"));
-                Long tiem = Long.valueOf(jsonObject.get("time").toString());
-                Date date = new Date(tiem);
-                String format = simpleDateFormat.get().format(date);
-                if (format.contains("2020-08-06") && "ResourceSubmit".equals(event)) {
-                    COUNT.increment();
-                }
-                // 同步提交
+//                JSONObject jsonObject = JSON.parseObject(record.value());
+//                String event = String.valueOf(jsonObject.get("event"));
+//                Long tiem = Long.valueOf(jsonObject.get("time").toString());
+//                Date date = new Date(tiem);
+//                String format = simpleDateFormat.get().format(date);
+//                if (format.contains("2020-08-06") && "ResourceSubmit".equals(event)) {
+//                    COUNT.increment();
+//                }
+                System.out.println(poll);
+//                // 同步提交
                 consumer.commitAsync();
             }
-            System.out.println("size:" + COUNT.longValue());
+//            System.out.println("size:" + COUNT.longValue());
         }
     }
 }
