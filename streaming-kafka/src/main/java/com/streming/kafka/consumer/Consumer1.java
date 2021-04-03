@@ -25,12 +25,13 @@ public class Consumer1 {
     private static final Properties CONSUMER_PROP = new Properties();
 
     public static Properties buildConsumerProp() {
-        CONSUMER_PROP.put(ConsumerConfig.CLIENT_ID_CONFIG, "consumer-1");
+        CONSUMER_PROP.put(ConsumerConfig.CLIENT_ID_CONFIG, "consumer-111");
         CONSUMER_PROP.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
         CONSUMER_PROP.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
         CONSUMER_PROP.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
-        CONSUMER_PROP.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, false);
-        CONSUMER_PROP.put(ConsumerConfig.GROUP_ID_CONFIG, "consumer_group");
+        CONSUMER_PROP.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, true);
+        CONSUMER_PROP.put(ConsumerConfig.GROUP_ID_CONFIG, "consumer_group1111");
+        CONSUMER_PROP.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "192.168.6.81:9092,192.168.6.82:9092,192.168.6.83:9092");
         // 最大拉取的记录数
 //        CONSUMER_PROP.put(ConsumerConfig.MAX_POLL_RECORDS_CONFIG, 1000);
 //        CONSUMER_PROP.put(ConsumerConfig.FETCH_MAX_BYTES_CONFIG, 1024 * 1024 * 10);
@@ -52,21 +53,10 @@ public class Consumer1 {
         // 每1秒拉取一条消息
         while (true) {
             ConsumerRecords<String, String> poll = consumer.poll(Duration.ofSeconds(1));
-
-            for (ConsumerRecord<String, String> record : poll) {
-//                JSONObject jsonObject = JSON.parseObject(record.value());
-//                String event = String.valueOf(jsonObject.get("event"));
-//                Long tiem = Long.valueOf(jsonObject.get("time").toString());
-//                Date date = new Date(tiem);
-//                String format = simpleDateFormat.get().format(date);
-//                if (format.contains("2020-08-06") && "ResourceSubmit".equals(event)) {
-//                    COUNT.increment();
-//                }
-                System.out.println(poll);
-//                // 同步提交
-                consumer.commitAsync();
+            System.out.println(poll.count());
+            for (ConsumerRecord<String, String> stringStringConsumerRecord : poll) {
+                System.out.println(stringStringConsumerRecord);
             }
-//            System.out.println("size:" + COUNT.longValue());
         }
     }
 }
