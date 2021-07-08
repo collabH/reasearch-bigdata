@@ -1,6 +1,6 @@
 package com.research.akka
 
-import akka.actor.{Actor, ActorRef, ActorSystem, Props}
+import akka.actor.{ActorRef, ActorSystem, Props}
 
 /**
  * @fileName: AkkaDemo.scala
@@ -15,18 +15,11 @@ object AkkaDemo {
     val actor2: ActorSystem = ActorSystem.create("actor2")
 
     // 获取actorRef
-    val hello: ActorRef = actor1.actorOf(Props.create(HelloActor.getClass), "hello")
+    val hello: ActorRef = actor1.actorOf(Props.create(ActorRef.getClass), "hello")
 
     // 不会阻塞后续代码运行,第二个参数表述无发送者
     hello.tell("hello actor", ActorRef.noSender)
 
 
-  }
-}
-
-object HelloActor extends Actor {
-  override def receive: Receive = {
-    print("xxx")
-    Actor
   }
 }
