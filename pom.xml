@@ -24,7 +24,6 @@
         <module>streaming-kafka</module>
         <module>hadoop-parquet</module>
         <module>research-flume</module>
-        <module>study-spark</module>
         <module>stateful-function</module>
         <module>hive</module>
         <module>research-zookeeper</module>
@@ -32,6 +31,7 @@
         <module>project</module>
         <module>kudu-demo</module>
         <module>rocksdb-learning</module>
+        <module>sqltree</module>
     </modules>
 
 
