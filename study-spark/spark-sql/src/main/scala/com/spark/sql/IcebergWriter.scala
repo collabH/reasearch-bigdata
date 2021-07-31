@@ -9,6 +9,9 @@ import org.apache.spark.sql.{DataFrame, DataFrameWriterV2, Row, SparkSession}
 import org.apache.spark.sql.functions._
 import org.apache.spark.sql.types.{DataTypes, StructField, StructType}
 
+import java.sql.Timestamp
+import java.time.LocalDateTime
+
 /**
  * @fileName: IcebergWriter.scala
  * @description: IcebergWriter.scala类说明
@@ -36,20 +39,19 @@ object IcebergWriter extends App {
     //      .tableProperty("write.format.default", "parquet")
     //      .partitionedBy(col("level"), days(col("ts")))
     //      .createOrReplace()
-    val structType: StructType = StructType.apply(Seq(StructField
-      .apply("id", DataTypes.IntegerType), StructField
-      .apply("name", DataTypes.StringType)))
-    val df: DataFrame = spark.createDataFrame(Seq(Test(3, "hsm1")))
-    val value: DataFrameWriterV2[Row] = df.writeTo("iceberg_db.test1")
+    val df: DataFrame = spark.createDataFrame(Seq(Test(5, "hsm2",Timestamp.valueOf(LocalDateTime.now()))))
+    val value: DataFrameWriterV2[Row] = df.writeTo("iceberg_db.iceberg_write")
     // append
     //    value
     //      .append()
     import spark.implicits._
 //    value.create()
 
+    value.overwritePartitions()
+
     spark.close()
   }
 }
 
-case class Test(id: Integer, name: String) {
+case class Test(id: Integer, name: String,ts:Timestamp) {
 }
