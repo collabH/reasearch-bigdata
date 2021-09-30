@@ -1,4 +1,4 @@
-package org.rocksdb.sst;
+package org.rocksdb.baseoperator.sst;
 
 import org.rocksdb.EnvOptions;
 import org.rocksdb.Options;

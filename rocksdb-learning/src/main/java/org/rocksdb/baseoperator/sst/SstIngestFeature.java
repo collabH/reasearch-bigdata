@@ -1,17 +1,14 @@
-package org.rocksdb.sst;
+package org.rocksdb.baseoperator.sst;
 
 import com.google.common.collect.Lists;
-import org.rocksdb.DBOptions;
 import org.rocksdb.IngestExternalFileOptions;
-import org.rocksdb.Options;
 import org.rocksdb.RocksDB;
 import org.rocksdb.RocksDBException;
 
 import java.nio.charset.Charset;
-import java.util.Arrays;
 
-import static org.rocksdb.sst.SstWriterFeature.dbPath;
-import static org.rocksdb.sst.SstWriterFeature.path;
+import static org.rocksdb.baseoperator.sst.SstWriterFeature.dbPath;
+import static org.rocksdb.baseoperator.sst.SstWriterFeature.path;
 
 /**
  * @fileName: SstIngestFeature.java

@@ -1,4 +1,4 @@
-package org.rocksdb.curd;
+package org.rocksdb.baseoperator.curd;
 
 import org.rocksdb.Options;
 import org.rocksdb.RocksDB;
@@ -6,7 +6,7 @@ import org.rocksdb.RocksDBException;
 import org.rocksdb.WriteBatch;
 import org.rocksdb.WriteOptions;
 
-import static org.rocksdb.sst.SstWriterFeature.dbPath;
+import static org.rocksdb.baseoperator.sst.SstWriterFeature.dbPath;
 
 /**
  * @fileName: DeleteFeature.java
@@ -51,6 +51,14 @@ public class DeleteFeature {
             // batch中删除
             WriteBatch writeBatch = new WriteBatch();
             writeBatch.singleDelete(key.getBytes());
+        } catch (RocksDBException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void deleteRange(String startKey,String endKey){
+        try {
+            db.deleteRange(startKey.getBytes(),endKey.getBytes());
         } catch (RocksDBException e) {
             e.printStackTrace();
         }
