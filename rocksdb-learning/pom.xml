@@ -18,10 +18,11 @@
 
     <dependencies>
         <!-- https://mvnrepository.com/artifact/org.rocksdb/rocksdbjni -->
+        <!-- https://mvnrepository.com/artifact/org.rocksdb/rocksdbjni -->
         <dependency>
-            <groupId>com.data-artisans</groupId>
-            <artifactId>frocksdbjni</artifactId>
-            <version>5.17.2-artisans-2.0</version>
+            <groupId>org.rocksdb</groupId>
+            <artifactId>rocksdbjni</artifactId>
+            <version>6.22.1.1</version>
         </dependency>
         <dependency>
             <groupId>org.apache.hadoop</groupId>

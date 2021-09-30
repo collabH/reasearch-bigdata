@@ -5,9 +5,12 @@ import org.rocksdb.ColumnFamilyHandle;
 import org.rocksdb.ColumnFamilyOptions;
 import org.rocksdb.DBOptions;
 import org.rocksdb.Env;
+import org.rocksdb.FlushOptions;
 import org.rocksdb.Options;
 import org.rocksdb.RocksDB;
 import org.rocksdb.RocksDBException;
+import org.rocksdb.WriteBatch;
+import org.rocksdb.WriteOptions;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -54,8 +57,8 @@ public class RocksDbTest {
                          columnFamilyHandleList)) {
                 try {
 
+                    db.write(new WriteOptions().setSync(true),new WriteBatch());
                     // do something
-
 
                 } finally {
 
