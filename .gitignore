@@ -29,3 +29,4 @@ hadoop-study/target/
 hadoop-study/hadoop-study.iml
 */target/*
 */*.iml
+project/*/*.iml
