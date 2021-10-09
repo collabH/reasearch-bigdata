@@ -31,3 +31,4 @@ hadoop-study/hadoop-study.iml
 */*.iml
 project/*/*.iml
 project/*/target/*
+avro/src/main/java/com/hadoop/avro/hadoop/com/hadoop/avro/hadoop/WeatherRecord.java
