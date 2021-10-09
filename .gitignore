@@ -27,3 +27,4 @@ hs_err_pid*
 reasech-bigdata.iml
 hadoop-study/target/
 hadoop-study/hadoop-study.iml
+*/target/*
