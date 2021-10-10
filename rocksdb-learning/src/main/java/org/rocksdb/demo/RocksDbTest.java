@@ -7,6 +7,7 @@ import org.rocksdb.DBOptions;
 import org.rocksdb.Env;
 import org.rocksdb.FlushOptions;
 import org.rocksdb.Options;
+import org.rocksdb.ReadOptions;
 import org.rocksdb.RocksDB;
 import org.rocksdb.RocksDBException;
 import org.rocksdb.WriteBatch;
@@ -32,6 +33,8 @@ public class RocksDbTest {
         RocksDB.loadLibrary();
     }
     public static void main(String[] args) {
+        Env env = Env.getDefault();
+        env.setBackgroundThreads(10);
 //        Env env = new HdfsEnv();
         try (final Options options = new Options().setCreateIfMissing(true)) {
             try (final RocksDB db = RocksDB.open(options, HDFS_DB_PATH)) {
