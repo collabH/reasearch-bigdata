@@ -24,6 +24,5 @@ public class MemTableConfigFeature {
         // 保留的历史的memtable
         options.setMaxWriteBufferNumberToMaintain(0);
 
- 
     }
 }
