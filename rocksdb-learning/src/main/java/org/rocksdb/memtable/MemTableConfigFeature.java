@@ -1,8 +1,5 @@
 package org.rocksdb.memtable;
 
-import org.rocksdb.ColumnFamilyOptions;
-import org.rocksdb.DBOptions;
-import org.rocksdb.MemTableConfig;
 import org.rocksdb.Options;
 import org.rocksdb.VectorMemTableConfig;
 
