@@ -10,9 +10,10 @@ import org.rocksdb.DBOptions;
 import org.rocksdb.LRUCache;
 import org.rocksdb.RocksDB;
 import org.rocksdb.RocksDBException;
+import org.rocksdb.RocksIterator;
 import org.rocksdb.WriteOptions;
+import org.rocksdb.utils.RocksDBValueParser;
 
-import java.nio.charset.Charset;
 import java.util.List;
 
 /**
@@ -23,6 +24,7 @@ import java.util.List;
  */
 public class ColumnFamilyFeature {
     private static String path = "/Users/huangshimin/Documents/study/rocksdb/db";
+    private static RocksDBValueParser parser = new RocksDBValueParser();
 
     public static void main(String[] args) {
         List<ColumnFamilyHandle> columnFamilyHandles = Lists.newArrayList();
@@ -51,14 +53,23 @@ public class ColumnFamilyFeature {
         DBOptions dbOptions = new DBOptions();
         // 后台flush和compaction的线程数
         dbOptions.setIncreaseParallelism(4);
+        // 使用列族需要先创建列族
         try (final RocksDB db = RocksDB.open(dbOptions, path, columnFamilyDescriptors, columnFamilyHandles)) {
-            db.createColumnFamilies(columnFamilyDescriptors);
+//            db.createColumnFamilies(columnFamilyDescriptors);
             WriteOptions writeOptions = new WriteOptions();
-            db.put(writeOptions, "name".getBytes(), "hsm".getBytes());
-            db.put(writeOptions, "age".getBytes(), "25".getBytes());
-            for (ColumnFamilyHandle columnFamilyHandle : columnFamilyHandles) {
-                System.out.println(new String(columnFamilyHandle.getName(), Charset.defaultCharset()));
+            ColumnFamilyHandle columnFamilyHandle = columnFamilyHandles.get(1);
+//            db.put(columnFamilyHandle, writeOptions, "name".getBytes(), "hsm".getBytes());
+//            db.put(columnFamilyHandle, writeOptions, "age".getBytes(), "11".getBytes());
+            RocksIterator rocksIterator = db.newIterator(columnFamilyHandle);
+            rocksIterator.seekToFirst();
+            // 读取特定列族数据
+            while (rocksIterator.isValid()) {
+                System.out.println(parser.apply(rocksIterator.key()) + ":" + parser.apply(rocksIterator.value()));
+                rocksIterator.next();
             }
+            // get
+            System.out.println(parser.apply(db.get(columnFamilyHandle, "name".getBytes())));
+            System.out.println(parser.apply(db.get(columnFamilyHandles.get(0), "name".getBytes())));
         } catch (RocksDBException e) {
             e.printStackTrace();
         }
