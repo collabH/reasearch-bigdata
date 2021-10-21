@@ -1,16 +1,18 @@
 package org.rocksdb.options;
 
 
+import com.google.common.collect.Lists;
 import org.rocksdb.BlockBasedTableConfig;
 import org.rocksdb.BuiltinComparator;
 import org.rocksdb.Cache;
 import org.rocksdb.ColumnFamilyDescriptor;
 import org.rocksdb.ColumnFamilyHandle;
 import org.rocksdb.ColumnFamilyOptions;
+import org.rocksdb.CompactionPriority;
+import org.rocksdb.CompactionStyle;
 import org.rocksdb.CompressionOptions;
 import org.rocksdb.CompressionType;
 import org.rocksdb.DBOptions;
-import org.rocksdb.Env;
 import org.rocksdb.FlushOptions;
 import org.rocksdb.HdfsEnv;
 import org.rocksdb.Options;
@@ -18,7 +20,9 @@ import org.rocksdb.RateLimiter;
 import org.rocksdb.ReadOptions;
 import org.rocksdb.RocksDB;
 import org.rocksdb.RocksDBException;
+import org.rocksdb.SkipListMemTableConfig;
 import org.rocksdb.SstFileManager;
+import org.rocksdb.StringAppendOperator;
 import org.rocksdb.WriteOptions;
 
 import java.util.ArrayList;
@@ -38,7 +42,24 @@ public class OptionsFeature {
         options.setAtomicFlush(true);
         // 设置比较器
         options.setComparator(BuiltinComparator.BYTEWISE_COMPARATOR);
-
+        // 设置merge方法的mergeOpeartor
+        options.setMergeOperator(new StringAppendOperator());
+        // 是否运行并发写入memtable
+        options.setAllowConcurrentMemtableWrite(true);
+        // 跨列族的buffer size
+        options.setWriteBufferSize(64 << 30);
+        SkipListMemTableConfig skipListMemTableConfig = new SkipListMemTableConfig();
+        // 设置memtable数据结构为skip list
+        options.setMemTableConfig(skipListMemTableConfig);
+        // compaction策略
+        options.setCompactionPriority(CompactionPriority.OldestLargestSeqFirst);
+        // 手动wal文件flush
+        options.setManualWalFlush(true);
+        // 如果不存在就创建
+        options.setCreateIfMissing(true);
+        // key的ttl
+        options.setTtl(10);
+        options.setAllow2pc(true);
         RocksDB db = RocksDB.open("test");
         FlushOptions flushOptions = new FlushOptions();
         db.flush(flushOptions);
@@ -56,10 +77,41 @@ public class OptionsFeature {
         DBOptions dbOptions = new DBOptions();
         // 默认大小是关闭的
         dbOptions.setDbWriteBufferSize(64 << 30);
+        // compaction和flush的线程数
+        dbOptions.setIncreaseParallelism(4);
+        // sst文件放入hdfs
+        dbOptions.setSstFileManager(new SstFileManager(new HdfsEnv("hdfspath")));
+        // 限流
+        dbOptions.setRateLimiter(new RateLimiter(10));
+        // 列族如果不存在就创建
+        dbOptions.setCreateMissingColumnFamilies(true);
+        dbOptions.setAllowMmapReads(true);
+        // 设置wal dir
+        dbOptions.setWalDir("wal");
+        dbOptions.setDbLogDir("");
+        // dbpath
+        dbOptions.setDbPaths(Lists.newArrayList());
+        // 设置执行env
+        dbOptions.setEnv(new HdfsEnv("test"));
         List<ColumnFamilyDescriptor> columnFamilyDescriptors = new ArrayList<>();
         ColumnFamilyOptions columnFamilyOptions = new ColumnFamilyOptions();
         // 默认为64MB
         columnFamilyOptions.setWriteBufferSize(64 << 20);
+        // 设置level压缩风格
+        columnFamilyOptions.setCompactionStyle(CompactionStyle.LEVEL);
+        // 最大的writeBuffer个数
+        columnFamilyOptions.setMaxWriteBufferNumber(6);
+        // 动态设置每一level的大小
+        columnFamilyOptions.setLevelCompactionDynamicLevelBytes(true);
+        // 目标文件大小
+//        columnFamilyOptions.setTargetFileSizeBase();
+        // 设置特定层数的压缩格式
+        CompressionOptions compressionOptions = new CompressionOptions();
+        columnFamilyOptions.setCompressionOptions(compressionOptions);
+        // 设置每一次的压缩算法
+        columnFamilyOptions.setCompressionPerLevel(Lists.newArrayList(CompressionType.BZLIB2_COMPRESSION));
+        // 设置每个列族的路径
+//        columnFamilyOptions.setCfPaths();
         ColumnFamilyDescriptor columnFamilyDescriptor = new ColumnFamilyDescriptor("name".getBytes(),
                 columnFamilyOptions);
         columnFamilyDescriptors.add(columnFamilyDescriptor);

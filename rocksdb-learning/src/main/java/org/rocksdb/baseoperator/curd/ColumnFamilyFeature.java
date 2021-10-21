@@ -35,7 +35,6 @@ public class ColumnFamilyFeature {
     public static void main(String[] args) {
         List<ColumnFamilyHandle> columnFamilyHandles = Lists.newArrayList();
         List<ColumnFamilyDescriptor> columnFamilyDescriptors = Lists.newArrayList();
-        // 列族配置
         ColumnFamilyOptions columnFamilyOptions = new ColumnFamilyOptions();
         columnFamilyOptions.setCompactionStyle(CompactionStyle.LEVEL);
         // 动态分配每一level的compaction bytes大小
