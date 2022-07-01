@@ -11,7 +11,7 @@
 
     <artifactId>hadoop-avro</artifactId>
     <properties>
-        <hadoop.version>2.6.0</hadoop.version>
+        <hadoop.version>2.7.0</hadoop.version>
         <avro.version>1.9.2</avro.version>
     </properties>
 
