@@ -46,7 +46,7 @@
         <dependency>
             <groupId>org.yaml</groupId>
             <artifactId>snakeyaml</artifactId>
-            <version>1.25</version>
+            <version>1.32</version>
         </dependency>
         <!--引入nacos-->
         <dependency>
